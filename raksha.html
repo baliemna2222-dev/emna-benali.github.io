@@ -1,162 +1,1281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Raksha Project</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raksha — Desktop Streaming App · Emna Ben Ali</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+    :root {
+      --bg: #F5F2ED;
+      --surface: #EDEAE3;
+      --card: #FFFFFF;
+      --ink: #1A1814;
+      --ink2: #4A4640;
+      --ink3: #8A8680;
+      --accent: #C8622A;
+      --accent2: #2A4CC8;
+      --border: rgba(26,24,20,0.10);
+      --border2: rgba(26,24,20,0.06);
+      --tag-bg: #1A1814;
+      --tag-fg: #F5F2ED;
+    }
 
-<style>
-body {
-  margin: 0;
-  font-family: 'Syne', sans-serif;
-  background: #F5F2ED;
-  color: #1A1814;
-}
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
 
-/* NAV */
-nav {
-  display:flex;
-  justify-content:space-between;
-  padding:20px 40px;
-  background: rgba(245,242,237,0.9);
-  position:fixed;
-  width:100%;
-  top:0;
-  border-bottom:1px solid rgba(0,0,0,0.1);
-}
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem; height: 64px;
+      background: rgba(245,242,237,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+    .nav-back {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em;
+      color: var(--ink2); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+    .nav-back svg { transition: transform 0.2s; }
+    .nav-back:hover svg { transform: translateX(-3px); }
+    .nav-right { display: flex; gap: 1rem; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.6rem 1.25rem;
+      border-radius: 3px;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.82rem; font-weight: 600; letter-spacing: 0.04em;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s; border: 1.5px solid transparent;
+    }
+    .btn-primary { background: var(--ink); color: var(--bg); }
+    .btn-primary:hover { background: var(--accent); }
+    .btn-outline { background: transparent; color: var(--ink); border-color: var(--border); }
+    .btn-outline:hover { border-color: var(--ink); }
 
-nav a {
-  text-decoration:none;
-  color:#1A1814;
-  font-weight:600;
-}
+    /* ── HERO ── */
+    .hero {
+      padding: 64px 0 0;
+      background: var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-noise {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 5rem 6rem 0;
+      position: relative; z-index: 1;
+    }
+    .hero-meta {
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .hero-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border-radius: 3px;
+      border: 1px solid rgba(200,98,42,0.5);
+      color: var(--accent);
+    }
+    .hero-year {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(245,242,237,0.35);
+    }
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: #F5F2ED;
+      margin-bottom: 1.5rem;
+    }
+    .hero-title em { color: var(--accent); font-style: italic; }
+    .hero-tagline {
+      font-size: 1.1rem; color: rgba(245,242,237,0.55);
+      max-width: 600px; line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 4rem; }
+    .btn-hero-primary {
+      background: var(--accent); color: #F5F2ED;
+      border-color: var(--accent);
+    }
+    .btn-hero-primary:hover { background: #b3541f; }
+    .btn-hero-outline {
+      background: transparent; color: rgba(245,242,237,0.8);
+      border: 1.5px solid rgba(255,255,255,0.15);
+    }
+    .btn-hero-outline:hover { border-color: rgba(255,255,255,0.4); color: #F5F2ED; }
 
-/* HERO */
-.header {
-  padding:120px 40px 40px;
-}
+    /* hero stats row */
+    .hero-stats-row {
+      display: flex; gap: 0;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .hero-stat {
+      flex: 1; padding: 1.75rem 0;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      display: flex; flex-direction: column; gap: 0.25rem;
+    }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.2rem; color: #F5F2ED;
+    }
+    .hero-stat-lbl {
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(245,242,237,0.35);
+    }
 
-.title {
-  font-family:'DM Serif Display', serif;
-  font-size:48px;
-}
+    /* ── MOCK SCREENSHOT SHOWCASE ── */
+    .showcase {
+      background: var(--surface);
+      padding: 5rem 0;
+    }
+    .showcase-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 6rem;
+    }
+    .section-label {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--accent);
+      display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem;
+    }
+    .section-label::before { content: ''; width: 28px; height: 1px; background: var(--accent); }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 3vw, 2.75rem);
+      line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 3rem;
+    }
 
-.subtitle {
-  color:#4A4640;
-  max-width:600px;
-}
+    /* Main screen mock */
+    .screen-main {
+      background: var(--ink);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      box-shadow: 0 32px 80px rgba(26,24,20,0.25);
+    }
+    .screen-titlebar {
+      background: #2A2620;
+      padding: 0.75rem 1.25rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #FF5F56; }
+    .dot-y { background: #FFBD2E; }
+    .dot-g { background: #27C93F; }
+    .screen-titlebar-label {
+      margin-left: auto; margin-right: auto;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem; color: rgba(245,242,237,0.3); letter-spacing: 0.1em;
+    }
+    .screen-body { padding: 0; }
 
-/* SECTION */
-.section {
-  padding:40px;
-}
+    /* Netflix-like mock UI */
+    .mock-app {
+      background: #141414;
+      min-height: 420px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Syne', sans-serif;
+    }
+    .mock-navbar {
+      position: absolute; top: 0; left: 0; right: 0;
+      display: flex; align-items: center;
+      padding: 1rem 2rem; gap: 2rem;
+      background: linear-gradient(to bottom, rgba(20,20,20,0.95) 0%, transparent 100%);
+      z-index: 10;
+    }
+    .mock-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem; color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    .mock-nav-links { display: flex; gap: 1.25rem; }
+    .mock-nav-link { font-size: 0.72rem; color: rgba(255,255,255,0.6); letter-spacing: 0.06em; }
+    .mock-nav-link.active { color: #fff; font-weight: 600; }
+    .mock-avatar-circle {
+      margin-left: auto; width: 28px; height: 28px;
+      border-radius: 4px; background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 700; color: #fff;
+    }
+    /* hero banner */
+    .mock-banner {
+      width: 100%; height: 420px;
+      background: linear-gradient(135deg, #1a0a00 0%, #2d1608 40%, #141414 100%);
+      position: relative; display: flex; align-items: center;
+      padding: 0 2rem;
+    }
+    .mock-banner-content { padding-top: 4rem; max-width: 340px; }
+    .mock-banner-tag {
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.5rem;
+      font-family: 'DM Mono', monospace;
+    }
+    .mock-banner-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.2rem; color: #fff; line-height: 1.1; margin-bottom: 0.75rem;
+    }
+    .mock-banner-desc {
+      font-size: 0.72rem; color: rgba(255,255,255,0.55); line-height: 1.65; margin-bottom: 1.25rem;
+    }
+    .mock-banner-btns { display: flex; gap: 0.5rem; }
+    .mock-btn {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em;
+      padding: 0.45rem 1rem; border-radius: 3px; cursor: default;
+    }
+    .mock-btn-play { background: #fff; color: #141414; }
+    .mock-btn-info { background: rgba(255,255,255,0.18); color: #fff; }
+    /* film strip on right */
+    .mock-filmstrip {
+      position: absolute; right: -10px; top: 0; bottom: 0;
+      display: flex; flex-direction: column; gap: 4px;
+      padding: 20px 0; opacity: 0.35;
+    }
+    .mock-film-card {
+      width: 120px; height: 68px; border-radius: 4px;
+      background: var(--c, #333);
+      flex-shrink: 0;
+    }
+    /* row section */
+    .mock-row-section {
+      background: #141414;
+      padding: 1rem 2rem 2rem;
+    }
+    .mock-row-label {
+      font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.8);
+      margin-bottom: 0.75rem; letter-spacing: 0.05em;
+    }
+    .mock-cards-row {
+      display: flex; gap: 0.5rem; overflow: hidden;
+    }
+    .mock-card {
+      flex-shrink: 0; width: 130px; height: 74px;
+      border-radius: 4px; background: var(--c, #2a2a2a);
+      position: relative; overflow: hidden;
+    }
+    .mock-card-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 0.3rem 0.4rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.75));
+      font-size: 0.52rem; color: rgba(255,255,255,0.8); font-weight: 600;
+      letter-spacing: 0.05em;
+    }
 
-.box {
-  background:white;
-  padding:20px;
-  border-radius:10px;
-  border:1px solid rgba(0,0,0,0.1);
-  margin-bottom:20px;
-}
+    /* Small screens grid */
+    .screens-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .screen-sm {
+      background: var(--ink);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      box-shadow: 0 16px 48px rgba(26,24,20,0.18);
+    }
+    .screen-sm .screen-titlebar { padding: 0.6rem 1rem; }
 
-/* IMAGE GALLERY */
-.gallery {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:15px;
-}
+    /* Admin mock */
+    .mock-admin {
+      background: #0F0F0F;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      min-height: 240px;
+    }
+    .admin-sidebar {
+      background: #1A1A1A;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      padding: 1rem 0;
+    }
+    .admin-sidebar-item {
+      padding: 0.6rem 1.25rem;
+      font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      display: flex; align-items: center; gap: 0.5rem;
+      cursor: default;
+    }
+    .admin-sidebar-item.active { color: #fff; background: rgba(200,98,42,0.15); border-left: 2px solid var(--accent); }
+    .admin-sidebar-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .admin-main { padding: 1.25rem; }
+    .admin-header-row {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1rem;
+    }
+    .admin-title { font-size: 0.85rem; font-weight: 700; color: #fff; }
+    .admin-add-btn {
+      font-size: 0.58rem; padding: 0.3rem 0.7rem;
+      background: var(--accent); color: #fff; border-radius: 3px;
+      font-weight: 600; letter-spacing: 0.06em; cursor: default;
+    }
+    .admin-table-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 0.5rem;
+      padding: 0.4rem 0.6rem;
+      background: rgba(255,255,255,0.04);
+      border-radius: 4px;
+      margin-bottom: 0.4rem;
+    }
+    .admin-th {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.52rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+    }
+    .admin-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 0.5rem;
+      padding: 0.5rem 0.6rem;
+      border-radius: 4px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      align-items: center;
+    }
+    .admin-cell { font-size: 0.62rem; color: rgba(255,255,255,0.65); }
+    .admin-cell.title { color: rgba(255,255,255,0.9); font-weight: 600; }
+    .admin-badge {
+      font-size: 0.52rem; padding: 0.2rem 0.5rem; border-radius: 3px;
+      font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      display: inline-block;
+    }
+    .badge-action { background: rgba(200,98,42,0.2); color: var(--accent); }
+    .badge-drama { background: rgba(42,76,200,0.2); color: #6b8ef0; }
+    .badge-thriller { background: rgba(100,200,100,0.12); color: #6fc96f; }
 
-.gallery img {
-  width:100%;
-  border-radius:10px;
-  border:1px solid rgba(0,0,0,0.1);
-}
+    /* Login mock */
+    .mock-login {
+      background: linear-gradient(160deg, #1a1814 0%, #2d1608 100%);
+      min-height: 240px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem;
+    }
+    .login-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 1.75rem;
+      width: 100%; max-width: 240px;
+    }
+    .login-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem; color: var(--accent);
+      text-align: center; margin-bottom: 1.25rem;
+    }
+    .login-field { margin-bottom: 0.75rem; }
+    .login-label {
+      display: block; font-size: 0.58rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(255,255,255,0.4);
+      margin-bottom: 0.3rem;
+    }
+    .login-input {
+      width: 100%; background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 4px; padding: 0.5rem 0.65rem;
+      font-size: 0.65rem; color: rgba(255,255,255,0.7);
+    }
+    .login-input.filled { color: rgba(255,255,255,0.9); border-color: rgba(200,98,42,0.5); }
+    .login-btn {
+      width: 100%; margin-top: 1rem;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 4px;
+      padding: 0.6rem; font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; cursor: default;
+    }
+    .login-toggle {
+      text-align: center; margin-top: 0.75rem;
+      font-size: 0.58rem; color: rgba(255,255,255,0.35);
+    }
+    .login-toggle span { color: var(--accent); cursor: default; }
 
-/* BUTTON */
-.btn {
-  display:inline-block;
-  padding:10px 20px;
-  background:#1A1814;
-  color:white;
-  text-decoration:none;
-  border-radius:5px;
-  margin-top:10px;
-}
+    /* Video Player mock */
+    .mock-player {
+      background: #000;
+      min-height: 240px;
+      position: relative; display: flex; align-items: center; justify-content: center;
+    }
+    .player-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #1a0800 0%, #0d0d0d 100%);
+      opacity: 0.9;
+    }
+    .player-center { position: relative; z-index: 1; text-align: center; }
+    .play-icon {
+      width: 56px; height: 56px;
+      border: 2px solid rgba(255,255,255,0.8);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+      cursor: default;
+    }
+    .play-triangle {
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 9px 0 9px 18px;
+      border-color: transparent transparent transparent rgba(255,255,255,0.9);
+      margin-left: 3px;
+    }
+    .player-title { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.8); margin-bottom: 0.25rem; }
+    .player-sub { font-size: 0.58rem; color: rgba(255,255,255,0.35); letter-spacing: 0.1em; }
+    .player-controls {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 0.75rem 1.25rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    }
+    .progress-bar {
+      width: 100%; height: 3px; background: rgba(255,255,255,0.15);
+      border-radius: 2px; margin-bottom: 0.5rem; position: relative; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; width: 42%; background: var(--accent); border-radius: 2px;
+    }
+    .player-ctrl-row {
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .ctrl-icon { font-size: 0.85rem; color: rgba(255,255,255,0.75); }
+    .ctrl-time {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem; color: rgba(255,255,255,0.45);
+    }
+    .ctrl-spacer { flex: 1; }
+    .ctrl-vol { font-size: 0.8rem; color: rgba(255,255,255,0.6); }
 
-.btn:hover {
-  background:#C8622A;
-}
-</style>
+    /* ── CONTENT SECTIONS ── */
+    .content { max-width: 1200px; margin: 0 auto; }
 
+    /* Overview */
+    .overview-section { padding: 5rem 6rem; }
+    .overview-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+    }
+    .overview-text h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.75rem; margin-bottom: 1rem; line-height: 1.2;
+    }
+    .overview-text p {
+      font-size: 0.95rem; color: var(--ink2); line-height: 1.8; margin-bottom: 1.25rem;
+    }
+    .overview-highlights { display: flex; flex-direction: column; gap: 1rem; }
+    .highlight-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      transition: transform 0.2s;
+    }
+    .highlight-item:hover { transform: translateX(4px); }
+    .highlight-icon {
+      width: 38px; height: 38px; border-radius: 8px;
+      background: var(--surface); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .highlight-text h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .highlight-text p { font-size: 0.82rem; color: var(--ink3); line-height: 1.5; }
+
+    /* Tech stack */
+    .tech-section { background: var(--surface); padding: 5rem 6rem; }
+    .tech-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+    }
+    .tech-card {
+      background: var(--card); padding: 2rem 1.5rem;
+      display: flex; flex-direction: column; gap: 0.75rem;
+      transition: background 0.2s;
+    }
+    .tech-card:hover { background: var(--bg); }
+    .tech-logo { font-size: 2rem; }
+    .tech-name { font-size: 1rem; font-weight: 700; }
+    .tech-role { font-size: 0.78rem; color: var(--ink3); line-height: 1.5; }
+    .tech-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.25rem; }
+    .tech-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem; padding: 0.2rem 0.5rem;
+      background: var(--tag-bg); color: var(--tag-fg); border-radius: 3px;
+    }
+
+    /* Features */
+    .features-section { padding: 5rem 6rem; }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    }
+    .feature-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.75rem;
+      position: relative; overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(26,24,20,0.08); }
+    .feature-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--accent);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .feature-card:hover::before { transform: scaleX(1); }
+    .feature-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem; color: var(--ink3); margin-bottom: 0.75rem;
+    }
+    .feature-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+    .feature-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .feature-desc { font-size: 0.82rem; color: var(--ink2); line-height: 1.65; }
+
+    /* Architecture */
+    .arch-section { background: var(--surface); padding: 5rem 6rem; }
+    .arch-diagram {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 3rem 2.5rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0;
+    }
+    .arch-layer {
+      display: flex; gap: 1.5rem; align-items: center; justify-content: center;
+      width: 100%;
+    }
+    .arch-box {
+      background: var(--ink); color: var(--bg);
+      border-radius: 6px; padding: 0.9rem 1.5rem;
+      text-align: center; flex: 1; max-width: 200px;
+      position: relative;
+    }
+    .arch-box-title {
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 0.25rem;
+    }
+    .arch-box-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem; color: rgba(245,242,237,0.45); letter-spacing: 0.1em;
+    }
+    .arch-box.accent { background: var(--accent); }
+    .arch-box.blue { background: var(--accent2); }
+    .arch-arrow {
+      font-size: 1.2rem; color: var(--ink3);
+      margin: 0.75rem 0;
+    }
+    .arch-arrow-row {
+      display: flex; justify-content: center; align-items: center; gap: 1.5rem;
+      width: 100%;
+    }
+    .arch-connector {
+      width: 2px; height: 32px; background: var(--border);
+      flex-shrink: 0; align-self: center;
+    }
+    .arch-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem; color: var(--ink3); letter-spacing: 0.12em;
+      text-transform: uppercase; text-align: center; margin: 0.25rem 0;
+    }
+
+    /* Challenges */
+    .challenges-section { padding: 5rem 6rem; }
+    .challenges-grid { display: flex; flex-direction: column; gap: 1.25rem; }
+    .challenge-item {
+      display: grid; grid-template-columns: 40px 1fr 1fr; gap: 2rem; align-items: start;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.5rem 2rem;
+    }
+    .challenge-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.75rem; color: var(--accent); line-height: 1;
+    }
+    .challenge-problem h4 {
+      font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--ink);
+    }
+    .challenge-problem p { font-size: 0.82rem; color: var(--ink3); line-height: 1.6; }
+    .challenge-solution {
+      padding-left: 2rem;
+      border-left: 2px solid var(--surface);
+    }
+    .challenge-solution-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.4rem;
+    }
+    .challenge-solution p { font-size: 0.82rem; color: var(--ink2); line-height: 1.6; }
+
+    /* Video demo */
+    .demo-section { background: var(--ink); padding: 5rem 6rem; }
+    .demo-section .section-label { color: var(--accent); }
+    .demo-section .section-label::before { background: var(--accent); }
+    .demo-section .section-title { color: #F5F2ED; }
+    .video-placeholder {
+      background: #0d0d0d;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; overflow: hidden;
+      aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      cursor: pointer;
+    }
+    .video-bg-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #1a0800 0%, #0d0d0d 100%);
+    }
+    .video-content { position: relative; z-index: 1; text-align: center; }
+    .video-play-btn {
+      width: 72px; height: 72px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 0 0 0 rgba(200,98,42,0.4);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(200,98,42,0.4); }
+      70% { box-shadow: 0 0 0 20px rgba(200,98,42,0); }
+      100% { box-shadow: 0 0 0 0 rgba(200,98,42,0); }
+    }
+    .video-play-triangle {
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 12px 0 12px 22px;
+      border-color: transparent transparent transparent #fff;
+      margin-left: 5px;
+    }
+    .video-label {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem; color: rgba(255,255,255,0.85); margin-bottom: 0.5rem;
+    }
+    .video-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+    .video-note {
+      margin-top: 1.5rem;
+      font-size: 0.82rem; color: rgba(245,242,237,0.35);
+      text-align: center;
+    }
+    .video-note a { color: var(--accent); text-decoration: none; }
+    .video-note a:hover { text-decoration: underline; }
+
+    /* Next project */
+    .next-section { padding: 5rem 6rem; }
+    .next-card {
+      background: var(--ink); border-radius: 8px; padding: 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem;
+    }
+    .next-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(245,242,237,0.3); margin-bottom: 0.75rem;
+    }
+    .next-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem; color: #F5F2ED; line-height: 1.1; margin-bottom: 0.5rem;
+    }
+    .next-sub { font-size: 0.88rem; color: rgba(245,242,237,0.45); }
+    .btn-next {
+      background: var(--accent); color: #fff;
+      border-color: var(--accent); white-space: nowrap;
+    }
+    .btn-next:hover { background: #b3541f; }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 1.5rem 6rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    footer p { font-size: 0.8rem; color: rgba(245,242,237,0.3); }
+
+    /* ANIMATIONS */
+    .fade-up {
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    @keyframes fadeUp { to { opacity: 1; transform: none; } }
+    .d1 { animation-delay: 0.1s; }
+    .d2 { animation-delay: 0.2s; }
+    .d3 { animation-delay: 0.3s; }
+    .d4 { animation-delay: 0.45s; }
+    .d5 { animation-delay: 0.6s; }
+
+    /* scroll reveal */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 1.25rem; }
+      .hero-inner { padding: 3rem 1.5rem 0; }
+      .overview-section, .tech-section, .features-section,
+      .arch-section, .challenges-section, .demo-section, .next-section { padding: 3rem 1.5rem; }
+      .showcase-inner { padding: 0 1.5rem; }
+      .overview-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .tech-grid { grid-template-columns: 1fr 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .screens-grid { grid-template-columns: 1fr; }
+      .challenge-item { grid-template-columns: 1fr; gap: 1rem; }
+      .challenge-solution { padding-left: 0; border-left: none; border-top: 1px solid var(--surface); padding-top: 1rem; }
+      .next-card { flex-direction: column; align-items: flex-start; }
+      footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+      .hero-stats-row { flex-wrap: wrap; }
+      .hero-stat { min-width: 50%; }
+    }
+  </style>
 </head>
-
 <body>
 
+<!-- NAV -->
 <nav>
-  <a href="index.html">← Back</a>
-  <a href="https://github.com/your-repo-link" target="_blank">GitHub Repo</a>
-</nav>
-
-<div class="header">
-  <div class="title">Raksha — Desktop Streaming App</div>
-  <div class="subtitle">
-    A Netflix-inspired desktop application built with JavaFX and MySQL.
-    It includes authentication, admin dashboard, and role-based access control.
-  </div>
-</div>
-
-<div class="section">
-
-  <div class="box">
-    <h2>📌 Project Overview</h2>
-    <p>
-      Raksha is a desktop streaming platform inspired by Netflix.
-      It allows users to browse and stream content while admins manage movies, users, and system data.
-    </p>
-  </div>
-
-  <div class="box">
-    <h2>⚙️ Technologies Used</h2>
-    <ul>
-      <li>Java</li>
-      <li>JavaFX (UI)</li>
-      <li>MySQL Database</li>
-      <li>JDBC</li>
-    </ul>
-  </div>
-
-  <div class="box">
-    <h2>🧠 Features</h2>
-    <ul>
-      <li>User & Admin authentication</li>
-      <li>Role-based access system</li>
-      <li>Video browsing interface</li>
-      <li>Admin dashboard for content management</li>
-      <li>Secure database connection</li>
-    </ul>
-  </div>
-
-  <div class="box">
-    <h2>🖼️ Screenshots</h2>
-    <div class="gallery">
-      <!-- Replace these with your real images -->
-      <img src="raksha1.png" alt="Raksha screenshot 1">
-      <img src="raksha2.png" alt="Raksha screenshot 2">
-      <img src="raksha3.png" alt="Raksha screenshot 3">
-    </div>
-  </div>
-
-  <div class="box">
-    <h2>🔗 GitHub Repository</h2>
-    <p>Check the full source code here:</p>
-    <a class="btn" href="https://github.com/your-repo-link" target="_blank">
-      View Code
+  <a href="index.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to Portfolio
+  </a>
+  <div class="nav-right">
+    <a href="https://github.com/yourusername/raksha" target="_blank" class="btn btn-outline">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      View on GitHub
     </a>
   </div>
+</nav>
 
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-inner">
+    <div class="hero-meta fade-up d1">
+      <span class="hero-badge">Completed · 2026</span>
+      <span class="hero-year">01 / Featured Project</span>
+    </div>
+    <h1 class="hero-title fade-up d2">Raksha —<br><em>Desktop Streaming</em></h1>
+    <p class="hero-tagline fade-up d3">
+      A Netflix-inspired desktop application built entirely with Java and JavaFX.
+      Dual user and admin roles, secure JDBC authentication, video browsing, and a full
+      content management dashboard — all in a single polished interface.
+    </p>
+    <div class="hero-actions fade-up d4">
+      <a href="https://github.com/yourusername/raksha" target="_blank" class="btn btn-hero-primary">
+        View Source Code →
+      </a>
+      <a href="#demo" class="btn btn-hero-outline">Watch Demo</a>
+      <a href="#features" class="btn btn-hero-outline">Explore Features</a>
+    </div>
+    <div class="hero-stats-row fade-up d5">
+      <div class="hero-stat">
+        <span class="hero-stat-num">4</span>
+        <span class="hero-stat-lbl">Technologies</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">2</span>
+        <span class="hero-stat-lbl">User Roles</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">1</span>
+        <span class="hero-stat-lbl">Solo Developer</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">∞</span>
+        <span class="hero-stat-lbl">Ambition</span>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- ── SCREENSHOTS SHOWCASE ── -->
+<div class="showcase">
+  <div class="showcase-inner">
+    <div class="section-label reveal">Interface</div>
+    <h2 class="section-title reveal">Application Screens</h2>
+
+    <!-- Main screen: home / browse -->
+    <div class="screen-main reveal">
+      <div class="screen-titlebar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <span class="screen-titlebar-label">Raksha · Home — User View</span>
+      </div>
+      <div class="screen-body">
+        <div class="mock-app">
+          <div class="mock-navbar">
+            <span class="mock-logo">Raksha</span>
+            <div class="mock-nav-links">
+              <span class="mock-nav-link active">Home</span>
+              <span class="mock-nav-link">Movies</span>
+              <span class="mock-nav-link">Series</span>
+              <span class="mock-nav-link">My List</span>
+            </div>
+            <div class="mock-avatar-circle">EB</div>
+          </div>
+          <div class="mock-banner">
+            <div class="mock-banner-content">
+              <div class="mock-banner-tag">Featured · Action</div>
+              <div class="mock-banner-title">Shadow Protocol</div>
+              <div class="mock-banner-desc">A gripping espionage thriller set in a near-future world where technology and humanity collide at the highest stakes.</div>
+              <div class="mock-banner-btns">
+                <div class="mock-btn mock-btn-play">▶ Play</div>
+                <div class="mock-btn mock-btn-info">ℹ More Info</div>
+              </div>
+            </div>
+            <div class="mock-filmstrip">
+              <div class="mock-film-card" style="--c:#2a1a0a;"></div>
+              <div class="mock-film-card" style="--c:#0a1a2a;"></div>
+              <div class="mock-film-card" style="--c:#1a0a1a;"></div>
+              <div class="mock-film-card" style="--c:#0a2a1a;"></div>
+              <div class="mock-film-card" style="--c:#1a1a0a;"></div>
+            </div>
+          </div>
+          <div class="mock-row-section">
+            <div class="mock-row-label">Continue Watching</div>
+            <div class="mock-cards-row">
+              <div class="mock-card" style="--c:#2a180a;"><div class="mock-card-overlay">Shadow Protocol</div></div>
+              <div class="mock-card" style="--c:#0a1a2a;"><div class="mock-card-overlay">Neon Eclipse</div></div>
+              <div class="mock-card" style="--c:#1a0a2a;"><div class="mock-card-overlay">The Signal</div></div>
+              <div class="mock-card" style="--c:#0a2a18;"><div class="mock-card-overlay">Cold Meridian</div></div>
+              <div class="mock-card" style="--c:#2a1a18;"><div class="mock-card-overlay">Red Lattice</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two smaller screens -->
+    <div class="screens-grid">
+      <!-- Admin Dashboard -->
+      <div class="screen-sm reveal">
+        <div class="screen-titlebar">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+          <span class="screen-titlebar-label">Raksha · Admin Dashboard</span>
+        </div>
+        <div class="mock-admin">
+          <div class="admin-sidebar">
+            <div class="admin-sidebar-item active"><div class="admin-sidebar-dot"></div>Movies</div>
+            <div class="admin-sidebar-item"><div class="admin-sidebar-dot"></div>Users</div>
+            <div class="admin-sidebar-item"><div class="admin-sidebar-dot"></div>Series</div>
+            <div class="admin-sidebar-item"><div class="admin-sidebar-dot"></div>Analytics</div>
+            <div class="admin-sidebar-item"><div class="admin-sidebar-dot"></div>Settings</div>
+          </div>
+          <div class="admin-main">
+            <div class="admin-header-row">
+              <span class="admin-title">Content Library</span>
+              <span class="admin-add-btn">+ Add Movie</span>
+            </div>
+            <div class="admin-table-header">
+              <span class="admin-th">Title</span>
+              <span class="admin-th">Genre</span>
+              <span class="admin-th">Year</span>
+              <span class="admin-th">Status</span>
+            </div>
+            <div class="admin-row">
+              <span class="admin-cell title">Shadow Protocol</span>
+              <span class="admin-cell"><span class="admin-badge badge-action">Action</span></span>
+              <span class="admin-cell">2025</span>
+              <span class="admin-cell" style="color:#6fc96f;font-size:.6rem;font-weight:700;">● Live</span>
+            </div>
+            <div class="admin-row">
+              <span class="admin-cell title">Neon Eclipse</span>
+              <span class="admin-cell"><span class="admin-badge badge-drama">Drama</span></span>
+              <span class="admin-cell">2024</span>
+              <span class="admin-cell" style="color:#6fc96f;font-size:.6rem;font-weight:700;">● Live</span>
+            </div>
+            <div class="admin-row">
+              <span class="admin-cell title">The Signal</span>
+              <span class="admin-cell"><span class="admin-badge badge-thriller">Thriller</span></span>
+              <span class="admin-cell">2025</span>
+              <span class="admin-cell" style="color:#f0a050;font-size:.6rem;font-weight:700;">◌ Draft</span>
+            </div>
+            <div class="admin-row">
+              <span class="admin-cell title">Cold Meridian</span>
+              <span class="admin-cell"><span class="admin-badge badge-action">Action</span></span>
+              <span class="admin-cell">2026</span>
+              <span class="admin-cell" style="color:#6fc96f;font-size:.6rem;font-weight:700;">● Live</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Login Screen -->
+      <div class="screen-sm reveal">
+        <div class="screen-titlebar">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+          <span class="screen-titlebar-label">Raksha · Authentication</span>
+        </div>
+        <div class="mock-login">
+          <div class="login-card">
+            <div class="login-logo">Raksha</div>
+            <div class="login-field">
+              <label class="login-label">Email Address</label>
+              <div class="login-input filled">emna@example.com</div>
+            </div>
+            <div class="login-field">
+              <label class="login-label">Password</label>
+              <div class="login-input filled">••••••••••</div>
+            </div>
+            <button class="login-btn">Sign In</button>
+            <div class="login-toggle">Don't have an account? <span>Sign up</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Player -->
+      <div class="screen-sm reveal" style="grid-column: 1 / -1;">
+        <div class="screen-titlebar">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+          <span class="screen-titlebar-label">Raksha · Video Player — Shadow Protocol</span>
+        </div>
+        <div class="mock-player">
+          <div class="player-bg"></div>
+          <div class="player-center">
+            <div class="play-icon"><div class="play-triangle"></div></div>
+            <div class="player-title">Shadow Protocol — Episode 3</div>
+            <div class="player-sub">HD · 1h 42m · Action</div>
+          </div>
+          <div class="player-controls">
+            <div class="progress-bar"><div class="progress-fill"></div></div>
+            <div class="player-ctrl-row">
+              <span class="ctrl-icon">⏮</span>
+              <span class="ctrl-icon">⏸</span>
+              <span class="ctrl-icon">⏭</span>
+              <span class="ctrl-time">42:15 / 1:42:00</span>
+              <span class="ctrl-spacer"></span>
+              <span class="ctrl-vol">🔊</span>
+              <span class="ctrl-icon" style="font-size:.75rem">⛶</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── VIDEO DEMO ── -->
+<div class="demo-section" id="demo">
+  <div class="content">
+    <div class="section-label reveal">Demo</div>
+    <h2 class="section-title reveal">Video Walkthrough</h2>
+    <div class="video-placeholder reveal" id="videoPlaceholder" onclick="this.innerHTML='<iframe style=\'width:100%;height:100%;border:none;\' src=\'YOUR_VIDEO_EMBED_URL\' allow=\'autoplay\' allowfullscreen></iframe>'">
+      <div class="video-bg-gradient"></div>
+      <div class="video-content">
+        <div class="video-play-btn"><div class="video-play-triangle"></div></div>
+        <div class="video-label">Watch Full Demo</div>
+        <div class="video-sub">Replace with your YouTube / Google Drive embed URL</div>
+      </div>
+    </div>
+    <p class="video-note">
+      To embed your demo: upload to <a href="https://youtube.com" target="_blank">YouTube</a> or
+      <a href="https://drive.google.com" target="_blank">Google Drive</a>, then replace
+      <code style="color: var(--accent); font-family: 'DM Mono', monospace; font-size: 0.8rem;">YOUR_VIDEO_EMBED_URL</code>
+      in the <code style="color: rgba(245,242,237,0.5); font-family: 'DM Mono', monospace; font-size: 0.8rem;">onclick</code> with your embed link.
+    </p>
+  </div>
+</div>
+
+<!-- ── OVERVIEW ── -->
+<div class="overview-section">
+  <div class="content">
+    <div class="overview-grid">
+      <div class="overview-text reveal">
+        <div class="section-label" style="margin-bottom:0.75rem;">Overview</div>
+        <h3>A fully-featured streaming platform built from scratch</h3>
+        <p>
+          Raksha started as an exercise in understanding how complex applications are
+          structured — role-based access, secure database interactions, and rich UI.
+          Inspired by Netflix, the goal was to replicate the feel of a real streaming
+          product while learning every layer of the stack.
+        </p>
+        <p>
+          The name <em>Raksha</em> (रक्षा) means "protection" in Sanskrit — a nod to the
+          emphasis on secure authentication and data safety at every layer of the application.
+        </p>
+        <p>
+          Designed and implemented entirely solo, from database schema design and JDBC
+          connection management, to the JavaFX scene graph, CSS styling, and FXML layouts.
+        </p>
+      </div>
+      <div class="overview-highlights reveal">
+        <div class="highlight-item">
+          <div class="highlight-icon">🔐</div>
+          <div class="highlight-text">
+            <h4>Secure by Design</h4>
+            <p>Password-based authentication with hashed credentials stored in MySQL. Session management controls access to all protected routes.</p>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-icon">🎭</div>
+          <div class="highlight-text">
+            <h4>Dual Role System</h4>
+            <p>Two fully separate interfaces: a polished viewer experience for users and a powerful content management dashboard for admins.</p>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-icon">🖥️</div>
+          <div class="highlight-text">
+            <h4>Rich Desktop UI</h4>
+            <p>Built with JavaFX and styled with CSS — responsive layouts, smooth scene transitions, and a dark Netflix-inspired visual language.</p>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-icon">🗄️</div>
+          <div class="highlight-text">
+            <h4>Full Database Integration</h4>
+            <p>Relational schema in MySQL handling users, roles, movies, series, and watch history — all accessed via JDBC with prepared statements.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TECH STACK ── -->
+<div class="tech-section">
+  <div class="content">
+    <div class="section-label reveal">Stack</div>
+    <h2 class="section-title reveal">Technologies Used</h2>
+    <div class="tech-grid reveal">
+      <div class="tech-card">
+        <div class="tech-logo">☕</div>
+        <div class="tech-name">Java</div>
+        <div class="tech-role">Core application logic, OOP architecture, event handling, and business rules throughout the entire application.</div>
+        <div class="tech-tags">
+          <span class="tech-tag">OOP</span>
+          <span class="tech-tag">MVC</span>
+          <span class="tech-tag">Java 17</span>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-logo">🎨</div>
+        <div class="tech-name">JavaFX</div>
+        <div class="tech-role">Full UI framework — scenes, stages, FXML layouts, CSS theming, media playback, and animated transitions.</div>
+        <div class="tech-tags">
+          <span class="tech-tag">FXML</span>
+          <span class="tech-tag">CSS</span>
+          <span class="tech-tag">Media</span>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-logo">🗄️</div>
+        <div class="tech-name">MySQL</div>
+        <div class="tech-role">Relational database storing users, roles, content catalogue, and session data with normalized schema design.</div>
+        <div class="tech-tags">
+          <span class="tech-tag">Schema</span>
+          <span class="tech-tag">Queries</span>
+          <span class="tech-tag">Relations</span>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-logo">🔌</div>
+        <div class="tech-name">JDBC</div>
+        <div class="tech-role">Java Database Connectivity layer — prepared statements, connection pooling, and safe parameterised queries to prevent SQL injection.</div>
+        <div class="tech-tags">
+          <span class="tech-tag">Prepared</span>
+          <span class="tech-tag">Pooling</span>
+          <span class="tech-tag">Safe SQL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURES ── -->
+<div class="features-section" id="features">
+  <div class="content">
+    <div class="section-label reveal">Capabilities</div>
+    <h2 class="section-title reveal">Feature Breakdown</h2>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-num">01</div>
+        <div class="feature-icon">🔑</div>
+        <div class="feature-title">Role-Based Authentication</div>
+        <div class="feature-desc">Login system with two roles: standard User and Admin. Role is stored in the database and determines which interface is loaded on sign-in. Sessions are managed in memory throughout the application lifecycle.</div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-num">02</div>
+        <div class="feature-icon">🎬</div>
+        <div class="feature-title">Content Browsing & Discovery</div>
+        <div class="feature-desc">Users can browse a full library of movies and series. Content is loaded dynamically from the MySQL database via JDBC and presented in a horizontally scrollable row layout — similar to Netflix's core browsing experience.</div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-num">03</div>
+        <div class="feature-icon">▶️</div>
+        <div class="feature-title">In-App Video Streaming</div>
+        <div class="feature-desc">Integrated JavaFX MediaPlayer for in-application video playback. Custom player controls include play/pause, seek bar, volume, and fullscreen — all implemented from scratch.</div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-num">04</div>
+        <div class="feature-icon">🛠️</div>
+        <div class="feature-title">Admin Content Management</div>
+        <div class="feature-desc">Admins access a separate dashboard to add, edit, and delete movies and series entries. All changes are persisted to the database immediately via JDBC and reflected in the user-facing content library.</div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-num">05</div>
+        <div class="feature-icon">👥</div>
+        <div class="feature-title">User Management</div>
+        <div class="feature-desc">Admin panel includes user management: view registered accounts, change user roles between standard and admin, or deactivate accounts. All operations update the MySQL user table in real time.</div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-num">06</div>
+        <div class="feature-icon">🎨</div>
+        <div class="feature-title">Dark Netflix-Inspired UI</div>
+        <div class="feature-desc">JavaFX styled entirely with custom CSS — dark colour palette, smooth scene transitions, hover states, and a layout hierarchy modelled after real streaming platforms for a polished, professional feel.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ARCHITECTURE ── -->
+<div class="arch-section">
+  <div class="content">
+    <div class="section-label reveal">Design</div>
+    <h2 class="section-title reveal">Application Architecture</h2>
+    <div class="arch-diagram reveal">
+      <!-- Presentation layer -->
+      <div class="arch-layer">
+        <div class="arch-box">
+          <div class="arch-box-title">User Interface</div>
+          <div class="arch-box-sub">JavaFX · FXML · CSS</div>
+        </div>
+        <div class="arch-box accent">
+          <div class="arch-box-title">Admin Dashboard</div>
+          <div class="arch-box-sub">JavaFX · Separate Scene</div>
+        </div>
+      </div>
+      <div class="arch-label" style="margin:0.6rem 0;">Presentation Layer — Scene-based navigation</div>
+      <div class="arch-arrow">↓</div>
+      <!-- Controller layer -->
+      <div class="arch-layer">
+        <div class="arch-box blue" style="max-width:420px; flex:1;">
+          <div class="arch-box-title">Controllers & Services</div>
+          <div class="arch-box-sub">Java classes · Event Handlers · Business Logic</div>
+        </div>
+      </div>
+      <div class="arch-label" style="margin:0.6rem 0;">Application Layer — MVC pattern</div>
+      <div class="arch-arrow">↓</div>
+      <!-- Data layer -->
+      <div class="arch-layer">
+        <div class="arch-box" style="max-width:200px;">
+          <div class="arch-box-title">JDBC Layer</div>
+          <div class="arch-box-sub">Prepared Statements</div>
+        </div>
+        <div class="arch-box" style="max-width:200px;">
+          <div class="arch-box-title">DAO Classes</div>
+          <div class="arch-box-sub">Data Access Objects</div>
+        </div>
+      </div>
+      <div class="arch-label" style="margin:0.6rem 0;">Data Access Layer</div>
+      <div class="arch-arrow">↓</div>
+      <!-- DB -->
+      <div class="arch-layer">
+        <div class="arch-box accent" style="max-width:340px; flex:1;">
+          <div class="arch-box-title">MySQL Database</div>
+          <div class="arch-box-sub">Users · Content · Roles · Sessions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CHALLENGES & SOLUTIONS ── -->
+<div class="challenges-section">
+  <div class="content">
+    <div class="section-label reveal">Process</div>
+    <h2 class="section-title reveal">Challenges &<br>Solutions</h2>
+    <div class="challenges-grid">
+      <div class="challenge-item reveal">
+        <div class="challenge-num">01</div>
+        <div class="challenge-problem">
+          <h4>Role-Based Scene Management</h4>
+          <p>JavaFX doesn't have a built-in routing system. Loading the correct interface after login based on role required careful architecture to avoid duplication and maintain clean scene transitions.</p>
+        </div>
+        <div class="challenge-solution">
+          <div class="challenge-solution-label">Solution</div>
+          <p>Implemented a central SceneManager utility class that maps roles to FXML roots. On successful login, the controller queries the user's role from the DB, then delegates to SceneManager to load and swap the correct scene on the primary Stage.</p>
+        </div>
+      </div>
+      <div class="challenge-item reveal">
+        <div class="challenge-num">02</div>
+        <div class="challenge-problem">
+          <h4>Secure Password Storage</h4>
+          <p>Storing plain-text passwords in MySQL is a critical vulnerability. Needed a way to securely hash and verify credentials without adding large external dependencies.</p>
+        </div>
+        <div class="challenge-solution">
+          <div class="challenge-solution-label">Solution</div>
+          <p>Used Java's built-in <code style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--accent);">MessageDigest</code> with SHA-256 to hash passwords before storage. On login, the entered password is hashed and compared to the stored hash — no plain text ever touches the database.</p>
+        </div>
+      </div>
+      <div class="challenge-item reveal">
+        <div class="challenge-num">03</div>
+        <div class="challenge-problem">
+          <h4>Dynamic Content Loading</h4>
+          <p>Populating the UI with database content at runtime — especially horizontal card rows — without blocking the UI thread was a core challenge with JavaFX's single-threaded model.</p>
+        </div>
+        <div class="challenge-solution">
+          <div class="challenge-solution-label">Solution</div>
+          <p>Offloaded database queries to JavaFX <code style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--accent);">Task</code> objects running on background threads, then used <code style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--accent);">Platform.runLater()</code> to safely update UI components once data was ready — keeping the interface responsive throughout.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── NEXT PROJECT ── -->
+<div class="next-section">
+  <div class="content reveal">
+    <div class="next-card">
+      <div>
+        <div class="next-label">Next Project · 02</div>
+        <div class="next-title">Farm Management<br>Web Application</div>
+        <div class="next-sub">Angular · Laravel · MySQL · REST API · In Progress</div>
+      </div>
+      <a href="index.html#projects" class="btn btn-next">Back to Portfolio →</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 — Emna Ben Ali · Software Engineering Student</p>
+  <p>Faculty of Sciences of Bizerte · GLSI</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
