@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio — Software Engineering Student</title>
+  <title>Emna Ben Ali — Software Engineering Student</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,13 +33,13 @@
       line-height: 1.6;
     }
 
-    /* ── NAV ── */
+    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 3rem;
       height: 64px;
-      background: rgba(245,242,237,0.85);
+      background: rgba(245,242,237,0.88);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       z-index: 100;
@@ -62,7 +62,7 @@
     }
     .nav-links a:hover { color: var(--accent); }
 
-    /* ── HERO ── */
+    /* HERO */
     .hero {
       min-height: 100vh;
       display: grid;
@@ -112,9 +112,7 @@
       line-height: 1.75;
       margin-bottom: 2.5rem;
     }
-    .hero-cta {
-      display: flex; gap: 1rem; flex-wrap: wrap;
-    }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
     .btn {
       display: inline-flex; align-items: center; gap: 0.5rem;
       padding: 0.75rem 1.75rem;
@@ -128,16 +126,9 @@
       transition: all 0.2s;
       border: 1.5px solid transparent;
     }
-    .btn-primary {
-      background: var(--ink);
-      color: var(--bg);
-    }
+    .btn-primary { background: var(--ink); color: var(--bg); }
     .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
-    .btn-outline {
-      background: transparent;
-      color: var(--ink);
-      border-color: var(--border);
-    }
+    .btn-outline { background: transparent; color: var(--ink); border-color: var(--border); }
     .btn-outline:hover { border-color: var(--ink); }
 
     .hero-right {
@@ -151,15 +142,16 @@
       overflow: hidden;
     }
     .hero-avatar {
-      width: 200px; height: 200px;
+      width: 180px; height: 180px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #C8622A 0%, #2A4CC8 100%);
+      background: var(--ink);
       display: flex; align-items: center; justify-content: center;
       font-family: 'DM Serif Display', serif;
-      font-size: 5rem;
-      color: #fff;
+      font-size: 4.5rem;
+      color: var(--bg);
       margin-bottom: 2rem;
       flex-shrink: 0;
+      border: 3px solid var(--accent);
     }
     .hero-stats {
       display: flex; gap: 2.5rem;
@@ -170,7 +162,7 @@
       border-bottom: none;
       width: 100%;
     }
-    .stat { text-align: center; }
+    .stat { text-align: center; flex: 1; }
     .stat-num {
       font-family: 'DM Serif Display', serif;
       font-size: 2rem;
@@ -184,10 +176,8 @@
       color: var(--ink3);
     }
 
-    /* ── SECTIONS ── */
-    section {
-      padding: 6rem 6rem;
-    }
+    /* SECTIONS */
+    section { padding: 6rem 6rem; }
     .section-label {
       font-size: 0.72rem;
       font-weight: 600;
@@ -208,7 +198,7 @@
       margin-bottom: 3rem;
     }
 
-    /* ── SKILLS ── */
+    /* SKILLS */
     #skills { background: var(--surface); }
     .skills-grid {
       display: grid;
@@ -226,20 +216,9 @@
       transition: background 0.2s;
     }
     .skill-item:hover { background: var(--bg); }
-    .skill-icon {
-      font-size: 1.5rem;
-      margin-bottom: 0.25rem;
-    }
-    .skill-name {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--ink);
-    }
-    .skill-desc {
-      font-size: 0.8rem;
-      color: var(--ink3);
-      line-height: 1.5;
-    }
+    .skill-icon { font-size: 1.5rem; margin-bottom: 0.25rem; }
+    .skill-name { font-size: 0.95rem; font-weight: 600; color: var(--ink); }
+    .skill-desc { font-size: 0.8rem; color: var(--ink3); line-height: 1.5; }
     .skill-bar-track {
       height: 3px;
       background: var(--border);
@@ -251,15 +230,9 @@
       height: 100%;
       background: var(--accent);
       border-radius: 2px;
-      transform-origin: left;
-      animation: growBar 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
-    @keyframes growBar {
-      from { transform: scaleX(0); }
-      to { transform: scaleX(1); }
     }
 
-    /* ── PROJECTS ── */
+    /* PROJECTS */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -297,7 +270,7 @@
       line-height: 1.2;
       color: var(--ink);
     }
-    .project-semester {
+    .project-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
@@ -305,12 +278,12 @@
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--accent);
       padding: 0.3rem 0.7rem;
-      background: rgba(200,98,42,0.08);
       border-radius: 3px;
       width: fit-content;
     }
+    .badge-done { color: var(--accent); background: rgba(200,98,42,0.08); }
+    .badge-wip  { color: var(--accent2); background: rgba(42,76,200,0.08); }
     .project-desc {
       font-size: 0.9rem;
       color: var(--ink2);
@@ -336,11 +309,202 @@
       font-style: italic;
     }
 
-    /* ── ABOUT / CONTACT ── */
-    #contact {
-      background: var(--ink);
-      color: var(--bg);
+    /* CERTIFICATIONS */
+    #certifications { background: var(--surface); }
+    .cert-featured-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
     }
+    .cert-featured {
+      background: var(--ink);
+      border-radius: 8px;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.25rem;
+      align-items: start;
+      position: relative;
+      overflow: hidden;
+    }
+    .cert-featured::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+    }
+    .cert-featured-icon {
+      width: 48px; height: 48px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      flex-shrink: 0;
+    }
+    .cert-featured-issuer {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(245,242,237,0.45);
+      margin-bottom: 0.35rem;
+    }
+    .cert-featured-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: #F5F2ED;
+      margin-bottom: 0.5rem;
+      line-height: 1.25;
+    }
+    .cert-featured-detail {
+      font-size: 0.82rem;
+      color: rgba(245,242,237,0.55);
+      line-height: 1.65;
+    }
+
+    .cert-grid-title {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .cert-card {
+      background: var(--card);
+      padding: 1.25rem 1.4rem;
+      transition: background 0.2s;
+    }
+    .cert-card:hover { background: var(--bg); }
+    .cert-issuer {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+    .cert-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+    .cert-year {
+      font-size: 0.72rem;
+      color: var(--ink3);
+      margin-top: 0.3rem;
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* EDUCATION */
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.5rem;
+      align-items: start;
+      position: relative;
+      overflow: hidden;
+    }
+    .edu-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent2);
+    }
+    .edu-icon {
+      width: 52px; height: 52px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .edu-inst {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 0.35rem;
+    }
+    .edu-degree {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.35rem;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+    .edu-detail {
+      font-size: 0.88rem;
+      color: var(--ink2);
+      line-height: 1.7;
+    }
+
+    /* EXTRA: languages + soft skills */
+    .extra-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .extra-block-title {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .lang-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--border2);
+    }
+    .lang-name { font-size: 0.9rem; font-weight: 500; }
+    .lang-level {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      background: var(--surface);
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+    .soft-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .soft-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      padding: 0.3rem 0.75rem;
+      background: var(--tag-bg);
+      color: var(--tag-fg);
+      border-radius: 3px;
+    }
+
+    /* CONTACT */
+    #contact { background: var(--ink); color: var(--bg); }
     #contact .section-label { color: #C8622A; }
     #contact .section-label::before { background: #C8622A; }
     #contact .section-title { color: var(--bg); }
@@ -380,7 +544,7 @@
     .contact-link-label { font-size: 0.72rem; color: rgba(245,242,237,0.45); }
     .contact-link-val { font-weight: 500; }
 
-    /* ── FOOTER ── */
+    /* FOOTER */
     footer {
       background: var(--ink);
       border-top: 1px solid rgba(255,255,255,0.06);
@@ -389,15 +553,13 @@
     }
     footer p { font-size: 0.8rem; color: rgba(245,242,237,0.3); }
 
-    /* ── ANIMATIONS ── */
+    /* ANIMATIONS */
     .fade-up {
       opacity: 0;
       transform: translateY(24px);
       animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
     .delay-1 { animation-delay: 0.1s; }
     .delay-2 { animation-delay: 0.2s; }
     .delay-3 { animation-delay: 0.3s; }
@@ -411,8 +573,9 @@
       .hero-left { padding: 4rem 1.5rem 2rem; }
       .hero-right { padding: 2rem 1.5rem 0; }
       section { padding: 4rem 1.5rem; }
-      footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
       .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .extra-grid { grid-template-columns: 1fr; }
+      footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
     }
   </style>
 </head>
@@ -420,11 +583,12 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">SE.</a>
+  <a href="#" class="nav-logo">E.BA</a>
   <div class="nav-links">
     <a href="#about">About</a>
     <a href="#skills">Skills</a>
     <a href="#projects">Projects</a>
+    <a href="#certifications">Certifications</a>
     <a href="#contact">Contact</a>
   </div>
 </nav>
@@ -432,11 +596,12 @@
 <!-- HERO -->
 <section class="hero" id="about">
   <div class="hero-left">
-    <div class="hero-label fade-up">Software Engineering Student</div>
-    <h1 class="hero-name fade-up delay-1">Building things<br>with <em>code</em> &<br>curiosity.</h1>
+    <div class="hero-label fade-up">Software Engineering Student — Tunisia</div>
+    <h1 class="hero-name fade-up delay-1">Emna<br><em>Ben Ali</em></h1>
     <p class="hero-desc fade-up delay-2">
-      I'm a passionate software engineering student focused on building meaningful
-      applications and mastering the craft of clean, well-structured code.
+      Passionate about building elegant software — from desktop applications to full-stack
+      web platforms. Currently in my 2nd year of the Engineering Cycle (GLSI) at the
+      Faculty of Sciences of Bizerte, seeking an internship to contribute to real-world projects.
     </p>
     <div class="hero-cta fade-up delay-3">
       <a href="#projects" class="btn btn-primary">View Projects →</a>
@@ -444,18 +609,18 @@
     </div>
   </div>
   <div class="hero-right">
-    <div class="hero-avatar fade-up delay-2">👨‍💻</div>
+    <div class="hero-avatar fade-up delay-2">E</div>
     <div class="hero-stats fade-up delay-4">
       <div class="stat">
-        <span class="stat-num">4</span>
+        <span class="stat-num">2</span>
         <span class="stat-lbl">Projects</span>
       </div>
       <div class="stat">
-        <span class="stat-num">2+</span>
-        <span class="stat-lbl">Years Study</span>
+        <span class="stat-num">8</span>
+        <span class="stat-lbl">Certifications</span>
       </div>
       <div class="stat">
-        <span class="stat-num">8</span>
+        <span class="stat-num">6+</span>
         <span class="stat-lbl">Technologies</span>
       </div>
     </div>
@@ -469,51 +634,51 @@
   <div class="skills-grid">
     <div class="skill-item">
       <div class="skill-icon">☕</div>
-      <div class="skill-name">Java</div>
-      <div class="skill-desc">Core, OOP, Collections, Generics, Java 8, JDBC, Multithreading</div>
-      <div class="skill-bar-track"><div class="skill-bar" style="width:90%"></div></div>
+      <div class="skill-name">Java & JavaFX</div>
+      <div class="skill-desc">OOP, desktop GUI, JDBC, event-driven interfaces</div>
+      <div class="skill-bar-track"><div class="skill-bar" style="width:88%"></div></div>
     </div>
     <div class="skill-item">
-      <div class="skill-icon">🪟</div>
-      <div class="skill-name">JavaFX / GUI</div>
-      <div class="skill-desc">Desktop GUI development, event-driven interfaces</div>
+      <div class="skill-icon">🌐</div>
+      <div class="skill-name">Web Dev</div>
+      <div class="skill-desc">HTML, CSS, JavaScript, Bootstrap, Angular, Laravel</div>
       <div class="skill-bar-track"><div class="skill-bar" style="width:75%"></div></div>
     </div>
     <div class="skill-item">
       <div class="skill-icon">⚙️</div>
-      <div class="skill-name">C Programming</div>
-      <div class="skill-desc">Low-level systems, terminal-based applications</div>
+      <div class="skill-name">C / C++</div>
+      <div class="skill-desc">Low-level systems, algorithms, data structures</div>
       <div class="skill-bar-track"><div class="skill-bar" style="width:70%"></div></div>
     </div>
     <div class="skill-item">
+      <div class="skill-icon">🐍</div>
+      <div class="skill-name">Python</div>
+      <div class="skill-desc">Scripting, automation, data manipulation</div>
+      <div class="skill-bar-track"><div class="skill-bar" style="width:68%"></div></div>
+    </div>
+    <div class="skill-item">
       <div class="skill-icon">🗄️</div>
-      <div class="skill-name">SQL / JDBC</div>
-      <div class="skill-desc">Relational databases, data querying & management</div>
-      <div class="skill-bar-track"><div class="skill-bar" style="width:65%"></div></div>
-    </div>
-    <div class="skill-item">
-      <div class="skill-icon">🏗️</div>
-      <div class="skill-name">OOP Design</div>
-      <div class="skill-desc">Inheritance, Polymorphism, Abstraction, Interfaces</div>
-      <div class="skill-bar-track"><div class="skill-bar" style="width:88%"></div></div>
-    </div>
-    <div class="skill-item">
-      <div class="skill-icon">🧠</div>
-      <div class="skill-name">Problem Solving</div>
-      <div class="skill-desc">Algorithms, logic, debugging complex systems</div>
-      <div class="skill-bar-track"><div class="skill-bar" style="width:80%"></div></div>
-    </div>
-    <div class="skill-item">
-      <div class="skill-icon">⚡</div>
-      <div class="skill-name">Java 8 Features</div>
-      <div class="skill-desc">Lambdas, Streams, functional-style programming</div>
+      <div class="skill-name">Databases</div>
+      <div class="skill-desc">MySQL, Oracle — relational design & querying</div>
       <div class="skill-bar-track"><div class="skill-bar" style="width:72%"></div></div>
     </div>
     <div class="skill-item">
-      <div class="skill-icon">🔀</div>
-      <div class="skill-name">Multithreading</div>
-      <div class="skill-desc">Concurrent programming, thread synchronisation</div>
+      <div class="skill-icon">🔌</div>
+      <div class="skill-name">Networking</div>
+      <div class="skill-desc">Cisco CCNA 1 & 2 — routing, switching, TCP/IP</div>
+      <div class="skill-bar-track"><div class="skill-bar" style="width:65%"></div></div>
+    </div>
+    <div class="skill-item">
+      <div class="skill-icon">🤖</div>
+      <div class="skill-name">Embedded / IoT</div>
+      <div class="skill-desc">Arduino Uno, sensor integration, hardware interfacing</div>
       <div class="skill-bar-track"><div class="skill-bar" style="width:60%"></div></div>
+    </div>
+    <div class="skill-item">
+      <div class="skill-icon">🔀</div>
+      <div class="skill-name">Tools & SE</div>
+      <div class="skill-desc">Git, GitHub, VS Code, Eclipse, UML modeling</div>
+      <div class="skill-bar-track"><div class="skill-bar" style="width:80%"></div></div>
     </div>
   </div>
 </section>
@@ -526,67 +691,135 @@
 
     <div class="project-card">
       <span class="project-num">01</span>
-      <div class="project-semester">Semester 1</div>
-      <h3 class="project-title">Auto École Management System</h3>
+      <div class="project-badge badge-done">Completed — 2026</div>
+      <h3 class="project-title">Raksha — Desktop Streaming App</h3>
       <p class="project-desc">
-        A Java application designed to manage driving school operations end-to-end —
-        tracking students, registrations, and scheduling in a structured, maintainable codebase.
-      </p>
-      <div class="project-tags">
-        <span class="tag">Java</span>
-        <span class="tag">OOP</span>
-        <span class="tag">Collections</span>
-      </div>
-      <p class="project-role">Designed and implemented core functionalities using object-oriented programming concepts.</p>
-    </div>
-
-    <div class="project-card">
-      <span class="project-num">02</span>
-      <div class="project-semester">Semester 2</div>
-      <h3 class="project-title">Netflix Clone Application</h3>
-      <p class="project-desc">
-        A Java-based desktop application inspired by Netflix — users can browse and manage
-        movies and series with a simulated streaming experience and polished UI.
+        A Netflix-inspired desktop application built with JavaFX and MySQL. Features dual
+        user and admin roles with secure authentication, video streaming capability, and
+        a full admin dashboard for content management. Role-based access control
+        implemented throughout using JDBC.
       </p>
       <div class="project-tags">
         <span class="tag">Java</span>
         <span class="tag">JavaFX</span>
-        <span class="tag">OOP</span>
-        <span class="tag">Collections</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">JDBC</span>
       </div>
-      <p class="project-role">Developed UI and implemented full application logic.</p>
+      <p class="project-role">Solo design and full implementation — user & admin flows.</p>
     </div>
 
     <div class="project-card">
-      <span class="project-num">03</span>
-      <h3 class="project-title">Java Quiz Game</h3>
+      <span class="project-num">02</span>
+      <div class="project-badge badge-wip">In Progress</div>
+      <h3 class="project-title">Farm Management Web Application</h3>
       <p class="project-desc">
-        An interactive quiz application that tests users on various topics, built with
-        clean object-oriented architecture and dynamic question management.
+        Full-stack web application developed as the capstone for a Full Stack Web
+        Development certification (CSF). Covers farm management workflows and
+        e-commerce features, with an Angular frontend and a Laravel REST API backend
+        connected to MySQL.
       </p>
       <div class="project-tags">
-        <span class="tag">Java</span>
-        <span class="tag">OOP</span>
-        <span class="tag">Swing</span>
+        <span class="tag">Angular</span>
+        <span class="tag">Laravel</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">REST API</span>
       </div>
-      <p class="project-role">Solo project — full design and implementation.</p>
+      <p class="project-role">Frontend & backend development — end-to-end full-stack.</p>
     </div>
 
-    <div class="project-card">
-      <span class="project-num">04</span>
-      <h3 class="project-title">Grumpy Grumpy</h3>
-      <p class="project-desc">
-        A terminal-based animal racing game written in C. Fast-paced, lightweight, and built
-        to explore low-level programming logic in a fun, interactive format.
-      </p>
-      <div class="project-tags">
-        <span class="tag">C</span>
-        <span class="tag">Terminal</span>
-        <span class="tag">Game Logic</span>
-      </div>
-      <p class="project-role">Designed game mechanics and terminal rendering system.</p>
-    </div>
+  </div>
+</section>
 
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-label">Achievements</div>
+  <h2 class="section-title">Certifications &<br>Programs</h2>
+
+  <div class="cert-featured-grid">
+    <div class="cert-featured">
+      <div class="cert-featured-icon">🏛️</div>
+      <div>
+        <div class="cert-featured-issuer">American Corner / U.S. Embassy in Tunisia</div>
+        <div class="cert-featured-name">21st Century Competencies Program</div>
+        <div class="cert-featured-detail">Summer 2025 · Ariana, Tunisia — A competitive program by the U.S. Embassy and American Corner developing future-ready digital and professional skills.</div>
+      </div>
+    </div>
+    <div class="cert-featured">
+      <div class="cert-featured-icon">💻</div>
+      <div>
+        <div class="cert-featured-issuer">CSF — Centre de Soutien à la Formation</div>
+        <div class="cert-featured-name">Full Stack Web Development Certification</div>
+        <div class="cert-featured-detail">In Progress · 2025 — Covers Angular, Laravel, MySQL from front to back. Includes a real-world farm management capstone project.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cert-grid-title">DataCamp Certificates · 2025–2026</div>
+  <div class="cert-grid">
+    <div class="cert-card">
+      <div class="cert-issuer">DataCamp</div>
+      <div class="cert-name">Python for Developers</div>
+      <div class="cert-year">2025–2026</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-issuer">DataCamp</div>
+      <div class="cert-name">Workflow Automation</div>
+      <div class="cert-year">2025–2026</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-issuer">DataCamp</div>
+      <div class="cert-name">AI Fundamentals</div>
+      <div class="cert-year">2025–2026</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-issuer">DataCamp</div>
+      <div class="cert-name">Excel Fundamentals</div>
+      <div class="cert-year">2025–2026</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-issuer">DataCamp</div>
+      <div class="cert-name">Intermediate Spreadsheets</div>
+      <div class="cert-year">2025–2026</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-issuer">DataCamp</div>
+      <div class="cert-name">Google Sheets Fundamentals</div>
+      <div class="cert-year">2025–2026</div>
+    </div>
+  </div>
+
+  <!-- EDUCATION inline here -->
+  <h2 class="section-title" style="margin-top:4rem">Education</h2>
+  <div class="edu-card">
+    <div class="edu-icon">🎓</div>
+    <div>
+      <div class="edu-inst">Faculty of Sciences of Bizerte · 2024 – Present</div>
+      <div class="edu-degree">Engineering Degree in GLSI</div>
+      <div class="edu-detail">
+        <strong>Génie Logiciel et Systèmes d'Information</strong> — Integrated Preparatory Cycle.<br>
+        Second year completed, preparing to enter the Engineering Cycle specialising in Software Engineering and Information Systems.
+      </div>
+    </div>
+  </div>
+
+  <div class="extra-grid">
+    <div>
+      <div class="extra-block-title">Languages Spoken</div>
+      <div>
+        <div class="lang-row"><span class="lang-name">Arabic</span><span class="lang-level">Native</span></div>
+        <div class="lang-row"><span class="lang-name">French</span><span class="lang-level">Good</span></div>
+        <div class="lang-row"><span class="lang-name">English</span><span class="lang-level">Good / Fluent</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="extra-block-title">Soft Skills</div>
+      <div class="soft-tags">
+        <span class="soft-tag">Teamwork</span>
+        <span class="soft-tag">Communication</span>
+        <span class="soft-tag">Problem-solving</span>
+        <span class="soft-tag">Leadership</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -597,40 +830,41 @@
   <div class="contact-grid">
     <div>
       <p class="contact-text">
-        I'm always open to new opportunities, collaborations, or just a conversation
-        about software engineering. Feel free to reach out through any of the channels below.
+        I'm always open to internship opportunities, collaborations, or just a conversation
+        about software engineering. I'm based in Ariana, Tunisia and available to start
+        contributing to real-world projects. Feel free to reach out.
       </p>
-      <a href="#" class="btn btn-primary">Download CV →</a>
+      <a href="mailto:benaliemna2005@gmail.com" class="btn btn-primary">Send an Email →</a>
     </div>
     <div class="contact-links">
-      <a href="mailto:your-email@example.com" class="contact-link">
+      <a href="mailto:benaliemna2005@gmail.com" class="contact-link">
         <div class="contact-link-icon">✉️</div>
         <div>
           <div class="contact-link-label">Email</div>
-          <div class="contact-link-val">your-email@example.com</div>
+          <div class="contact-link-val">benaliemna2005@gmail.com</div>
         </div>
       </a>
-      <a href="https://github.com/yourusername" class="contact-link" target="_blank">
-        <div class="contact-link-icon">🐙</div>
+      <a href="tel:+21695831004" class="contact-link">
+        <div class="contact-link-icon">📞</div>
         <div>
-          <div class="contact-link-label">GitHub</div>
-          <div class="contact-link-val">github.com/yourusername</div>
+          <div class="contact-link-label">Phone</div>
+          <div class="contact-link-val">+216 95 831 004</div>
         </div>
       </a>
-      <a href="https://linkedin.com/in/yourprofile" class="contact-link" target="_blank">
-        <div class="contact-link-icon">💼</div>
+      <div class="contact-link" style="cursor:default">
+        <div class="contact-link-icon">📍</div>
         <div>
-          <div class="contact-link-label">LinkedIn</div>
-          <div class="contact-link-val">linkedin.com/in/yourprofile</div>
+          <div class="contact-link-label">Location</div>
+          <div class="contact-link-val">Petite Ariana, Ariana — Tunisia</div>
         </div>
-      </a>
+      </div>
     </div>
   </div>
 </section>
 
 <footer>
-  <p>© 2025 — Software Engineering Student Portfolio</p>
-  <p>Built with HTML, CSS & passion for clean code.</p>
+  <p>© 2026 — Emna Ben Ali · Software Engineering Student</p>
+  <p>Faculty of Sciences of Bizerte · GLSI</p>
 </footer>
 
 </body>
