@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raksha Project</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Syne', sans-serif;
+  background: #F5F2ED;
+  color: #1A1814;
+}
+
+/* NAV */
+nav {
+  display:flex;
+  justify-content:space-between;
+  padding:20px 40px;
+  background: rgba(245,242,237,0.9);
+  position:fixed;
+  width:100%;
+  top:0;
+  border-bottom:1px solid rgba(0,0,0,0.1);
+}
+
+nav a {
+  text-decoration:none;
+  color:#1A1814;
+  font-weight:600;
+}
+
+/* HERO */
+.header {
+  padding:120px 40px 40px;
+}
+
+.title {
+  font-family:'DM Serif Display', serif;
+  font-size:48px;
+}
+
+.subtitle {
+  color:#4A4640;
+  max-width:600px;
+}
+
+/* SECTION */
+.section {
+  padding:40px;
+}
+
+.box {
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  border:1px solid rgba(0,0,0,0.1);
+  margin-bottom:20px;
+}
+
+/* IMAGE GALLERY */
+.gallery {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:15px;
+}
+
+.gallery img {
+  width:100%;
+  border-radius:10px;
+  border:1px solid rgba(0,0,0,0.1);
+}
+
+/* BUTTON */
+.btn {
+  display:inline-block;
+  padding:10px 20px;
+  background:#1A1814;
+  color:white;
+  text-decoration:none;
+  border-radius:5px;
+  margin-top:10px;
+}
+
+.btn:hover {
+  background:#C8622A;
+}
+</style>
+
+</head>
+
+<body>
+
+<nav>
+  <a href="index.html">← Back</a>
+  <a href="https://github.com/your-repo-link" target="_blank">GitHub Repo</a>
+</nav>
+
+<div class="header">
+  <div class="title">Raksha — Desktop Streaming App</div>
+  <div class="subtitle">
+    A Netflix-inspired desktop application built with JavaFX and MySQL.
+    It includes authentication, admin dashboard, and role-based access control.
+  </div>
+</div>
+
+<div class="section">
+
+  <div class="box">
+    <h2>📌 Project Overview</h2>
+    <p>
+      Raksha is a desktop streaming platform inspired by Netflix.
+      It allows users to browse and stream content while admins manage movies, users, and system data.
+    </p>
+  </div>
+
+  <div class="box">
+    <h2>⚙️ Technologies Used</h2>
+    <ul>
+      <li>Java</li>
+      <li>JavaFX (UI)</li>
+      <li>MySQL Database</li>
+      <li>JDBC</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h2>🧠 Features</h2>
+    <ul>
+      <li>User & Admin authentication</li>
+      <li>Role-based access system</li>
+      <li>Video browsing interface</li>
+      <li>Admin dashboard for content management</li>
+      <li>Secure database connection</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h2>🖼️ Screenshots</h2>
+    <div class="gallery">
+      <!-- Replace these with your real images -->
+      <img src="raksha1.png" alt="Raksha screenshot 1">
+      <img src="raksha2.png" alt="Raksha screenshot 2">
+      <img src="raksha3.png" alt="Raksha screenshot 3">
+    </div>
+  </div>
+
+  <div class="box">
+    <h2>🔗 GitHub Repository</h2>
+    <p>Check the full source code here:</p>
+    <a class="btn" href="https://github.com/your-repo-link" target="_blank">
+      View Code
+    </a>
+  </div>
+
+</div>
+
+</body>
+</html>
