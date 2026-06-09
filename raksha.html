@@ -984,22 +984,43 @@
   <div class="content">
     <div class="section-label reveal">Demo</div>
     <h2 class="section-title reveal">Video Walkthrough</h2>
-    <div class="video-placeholder reveal" id="videoPlaceholder" onclick="this.innerHTML='<iframe style=\'width:100%;height:100%;border:none;\' src=\'YOUR_VIDEO_EMBED_URL\' allow=\'autoplay\' allowfullscreen></iframe>'">
+
+    <div class="video-placeholder reveal" id="videoPlaceholder"
+      onclick="loadVideo()">
+      
       <div class="video-bg-gradient"></div>
+
       <div class="video-content">
-        <div class="video-play-btn"><div class="video-play-triangle"></div></div>
+        <div class="video-play-btn">
+          <div class="video-play-triangle"></div>
+        </div>
+
         <div class="video-label">Watch Full Demo</div>
-        <div class="video-sub">Replace with your YouTube / Google Drive embed URL</div>
+        <div class="video-sub">Click to play video</div>
       </div>
     </div>
+
     <p class="video-note">
-      To embed your demo: upload to <a href="https://youtube.com" target="_blank">YouTube</a> or
-      <a href="https://drive.google.com" target="_blank">Google Drive</a>, then replace
-      <code style="color: var(--accent); font-family: 'DM Mono', monospace; font-size: 0.8rem;">YOUR_VIDEO_EMBED_URL</code>
-      in the <code style="color: rgba(245,242,237,0.5); font-family: 'DM Mono', monospace; font-size: 0.8rem;">onclick</code> with your embed link.
+      Video hosted on Google Drive. Make sure it is set to
+      <b>"Anyone with the link can view"</b>.
     </p>
   </div>
 </div>
+
+<script>
+  function loadVideo() {
+    const container = document.getElementById("videoPlaceholder");
+
+    container.innerHTML = `
+      <iframe 
+        style="width:100%; height:100%; border:none;"
+        src="https://drive.google.com/file/d/1UFKSTUxV9dpKU-4gU033wWyWa3UuT0F6/preview"
+        allow="autoplay"
+        allowfullscreen>
+      </iframe>
+    `;
+  }
+</script>
 
 <!-- ── OVERVIEW ── -->
 <div class="overview-section">
