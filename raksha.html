@@ -835,146 +835,91 @@
 <!-- SCREENSHOTS CAROUSEL -->
 <section class="showcase">
   <style>
-    .showcase { padding: 2.5rem 0; }
+  .showcase {
+    padding: 3rem 0;
+    width: 100%;
+  }
 
-    .carousel-header { margin-bottom: 1rem; }
-    .carousel-header .section-label {
-      font-size: 12px;
-      color: #888;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-    .carousel-header .section-title {
-      font-size: 26px;
-      font-weight: 500;
-      margin: 0;
-    }
+  .showcase-inner {
+    width: 100%;
+    max-width: 1400px;
+    margin: auto;
+  }
 
-    .carousel-outer {
-      position: relative;
-      padding: 0 30px;
-    }
+  .carousel-header .section-title {
+    font-size: 28px;
+  }
 
-    .carousel-track-wrap {
-      overflow: hidden;
-      border-radius: 14px;
-    }
+  .carousel-outer {
+    position: relative;
+    padding: 0 10px; /* 👈 smaller padding = more width */
+  }
 
-    .carousel-track {
-      display: flex;
-      gap: 18px;
-      transition: transform 0.4s cubic-bezier(.4,0,.2,1);
-      will-change: transform;
-    }
+  .carousel-track-wrap {
+    overflow: hidden;
+    border-radius: 14px;
+    width: 100%;
+  }
 
-    /* 🔥 BIGGER CARD */
-    .screenshot-card {
-      flex: 0 0 260px;
-      background: #fff;
-      border: 0.5px solid #e0e0e0;
-      border-radius: 10px;
-      overflow: hidden;
-    }
+  .carousel-track {
+    display: flex;
+    gap: 22px;
+    transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+  }
 
-    /* 🔥 BIGGER IMAGE */
-    .screenshot-card .img-wrap {
-      width: 260px;
-      height: 160px;
-      background: #f5f5f5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
+  /* 🔥 BIGGER CARDS */
+  .screenshot-card {
+    flex: 0 0 340px;
+    background: #fff;
+    border: 0.5px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
 
-    .screenshot-card .img-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+  /* 🔥 WIDER IMAGE */
+  .screenshot-card .img-wrap {
+    width: 340px;
+    height: 200px;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
 
-    .screenshot-card .img-placeholder {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      width: 100%;
-      height: 100%;
-      color: #aaa;
-      font-size: 12px;
-    }
+  .screenshot-card .img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-    .screenshot-card h3 {
-      font-size: 13px;
-      font-weight: 500;
-      color: #555;
-      padding: 10px 12px;
-      margin: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+  .screenshot-card h3 {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 14px;
+  }
 
-    .carousel-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-60%);
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #fff;
-      border: 0.5px solid #ccc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 10;
-      font-size: 18px;
-      color: #333;
-      transition: background 0.15s;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    }
+  /* NAV BUTTONS */
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #ddd;
+    font-size: 20px;
+  }
 
-    .carousel-btn:hover { background: #f5f5f5; }
+  .carousel-btn.prev { left: -10px; }
+  .carousel-btn.next { right: -10px; }
 
-    .carousel-btn.prev { left: 0px; }
-    .carousel-btn.next { right: 0px; }
-
-    .carousel-btn:disabled { opacity: 0.3; cursor: default; }
-
-    .carousel-dots {
-      display: flex;
-      gap: 6px;
-      justify-content: center;
-      margin-top: 14px;
-      flex-wrap: wrap;
-    }
-
-    .carousel-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #ccc;
-      cursor: pointer;
-      border: none;
-      transition: background 0.2s, transform 0.2s;
-    }
-
-    .carousel-dot.active {
-      background: #333;
-      transform: scale(1.3);
-    }
-
-    .carousel-counter {
-      font-size: 12px;
-      color: #aaa;
-      text-align: center;
-      margin-top: 6px;
-    }
-  </style>
+  .carousel-dots {
+    margin-top: 16px;
+  }
+</style>
+ 
 
   <div class="showcase-inner">
     <div class="carousel-header">
