@@ -835,27 +835,145 @@
 <!-- SCREENSHOTS CAROUSEL -->
 <section class="showcase">
   <style>
-    .showcase { padding: 2rem 0; }
+    .showcase { padding: 2.5rem 0; }
+
     .carousel-header { margin-bottom: 1rem; }
-    .carousel-header .section-label { font-size: 12px; color: #888; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
-    .carousel-header .section-title { font-size: 22px; font-weight: 500; margin: 0; }
-    .carousel-outer { position: relative; padding: 0 20px; }
-    .carousel-track-wrap { overflow: hidden; border-radius: 12px; }
-    .carousel-track { display: flex; gap: 12px; transition: transform 0.4s cubic-bezier(.4,0,.2,1); will-change: transform; }
-    .screenshot-card { flex: 0 0 160px; background: #fff; border: 0.5px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
-    .screenshot-card .img-wrap { width: 160px; height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .screenshot-card .img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .screenshot-card .img-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 100%; color: #aaa; font-size: 11px; }
-    .screenshot-card h3 { font-size: 12px; font-weight: 500; color: #555; padding: 8px 10px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .carousel-btn { position: absolute; top: 50%; transform: translateY(-60%); width: 32px; height: 32px; border-radius: 50%; background: #fff; border: 0.5px solid #ccc; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 18px; color: #333; transition: background 0.15s; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .carousel-header .section-label {
+      font-size: 12px;
+      color: #888;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .carousel-header .section-title {
+      font-size: 26px;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .carousel-outer {
+      position: relative;
+      padding: 0 30px;
+    }
+
+    .carousel-track-wrap {
+      overflow: hidden;
+      border-radius: 14px;
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 18px;
+      transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+      will-change: transform;
+    }
+
+    /* 🔥 BIGGER CARD */
+    .screenshot-card {
+      flex: 0 0 260px;
+      background: #fff;
+      border: 0.5px solid #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    /* 🔥 BIGGER IMAGE */
+    .screenshot-card .img-wrap {
+      width: 260px;
+      height: 160px;
+      background: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .screenshot-card .img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .screenshot-card .img-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      height: 100%;
+      color: #aaa;
+      font-size: 12px;
+    }
+
+    .screenshot-card h3 {
+      font-size: 13px;
+      font-weight: 500;
+      color: #555;
+      padding: 10px 12px;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-60%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      border: 0.5px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      font-size: 18px;
+      color: #333;
+      transition: background 0.15s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
     .carousel-btn:hover { background: #f5f5f5; }
-    .carousel-btn.prev { left: -4px; }
-    .carousel-btn.next { right: -4px; }
+
+    .carousel-btn.prev { left: 0px; }
+    .carousel-btn.next { right: 0px; }
+
     .carousel-btn:disabled { opacity: 0.3; cursor: default; }
-    .carousel-dots { display: flex; gap: 6px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
-    .carousel-dot { width: 6px; height: 6px; border-radius: 50%; background: #ccc; cursor: pointer; border: none; padding: 0; transition: background 0.2s, transform 0.2s; }
-    .carousel-dot.active { background: #333; transform: scale(1.3); }
-    .carousel-counter { font-size: 12px; color: #aaa; text-align: center; margin-top: 6px; }
+
+    .carousel-dots {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .carousel-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ccc;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .carousel-dot.active {
+      background: #333;
+      transform: scale(1.3);
+    }
+
+    .carousel-counter {
+      font-size: 12px;
+      color: #aaa;
+      text-align: center;
+      margin-top: 6px;
+    }
   </style>
 
   <div class="showcase-inner">
@@ -863,13 +981,17 @@
       <div class="section-label">Interface</div>
       <h2 class="section-title">Application Screens</h2>
     </div>
+
     <div class="carousel-outer">
-      <button class="carousel-btn prev" id="scPrev" aria-label="Previous">&#8249;</button>
+      <button class="carousel-btn prev" id="scPrev">&#8249;</button>
+
       <div class="carousel-track-wrap">
         <div class="carousel-track" id="scTrack"></div>
       </div>
-      <button class="carousel-btn next" id="scNext" aria-label="Next">&#8250;</button>
+
+      <button class="carousel-btn next" id="scNext">&#8250;</button>
     </div>
+
     <div class="carousel-dots" id="scDots"></div>
     <div class="carousel-counter" id="scCounter"></div>
   </div>
@@ -877,35 +999,24 @@
   <script>
     (function () {
       const screens = [
-        { src: "entrance.png",        label: "Entrance Page" },
-        { src: "login.png",           label: "Login" },
-        { src: "signup.png",          label: "Sign Up" },
-        { src: "forgetpassword.png",  label: "Forget Password" },
-        { src: "carrousel.png",       label: "Home Carousel" },
-        { src: "categories.png",      label: "Categories" },
-        { src: "watchnext.png",       label: "Watch Next" },
-        { src: "watched.png",         label: "Watched" },
-        { src: "topwatched.png",      label: "Top Watched" },
-        { src: "mylist.png",          label: "My List" },
-        { src: "lecturepage.png",     label: "Video Player" },
-        { src: "notification.png",    label: "Notifications" },
-        { src: "comments.png",        label: "Comments" },
-        { src: "reportedcomments.png",label: "Reported Comments" },
-        { src: "admindashboard.png",  label: "Admin Dashboard" },
-        { src: "filmcrud.png",        label: "Movies Management" },
-        { src: "seriecrud.png",       label: "Series Management" },
-        { src: "episodes.png",        label: "Episodes Management" },
-        { src: "categoriescrud.png",  label: "Categories Management" },
-        { src: "usercrud.png",        label: "User Management" }
+        { src: "entrance.png", label: "Entrance Page" },
+        { src: "login.png", label: "Login" },
+        { src: "signup.png", label: "Sign Up" },
+        { src: "carrousel.png", label: "Home Carousel" },
+        { src: "categories.png", label: "Categories" },
+        { src: "mylist.png", label: "My List" },
+        { src: "lecturepage.png", label: "Video Player" },
+        { src: "comments.png", label: "Comments" },
+        { src: "admindashboard.png", label: "Admin Dashboard" }
       ];
 
-      const VISIBLE = 4;
-      const CARD_W  = 400;
-      const GAP     = 15;
+      const VISIBLE = 3; // adjusted for bigger cards
+      const CARD_W  = 260;
+      const GAP     = 18;
       const STEP    = CARD_W + GAP;
 
-      const track   = document.getElementById('scTrack');
-      const dotsWrap= document.getElementById('scDots');
+      const track = document.getElementById('scTrack');
+      const dotsWrap = document.getElementById('scDots');
       const counter = document.getElementById('scCounter');
       const prevBtn = document.getElementById('scPrev');
       const nextBtn = document.getElementById('scNext');
@@ -913,8 +1024,7 @@
       let current = 0;
       const maxIndex = screens.length - VISIBLE;
 
-      /* Build cards */
-      screens.forEach(function (s) {
+      screens.forEach(s => {
         const card = document.createElement('div');
         card.className = 'screenshot-card';
 
@@ -928,8 +1038,10 @@
 
         const img = new Image();
         img.alt = s.label;
-        img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:none;';
-        img.onload = function () { ph.style.display = 'none'; img.style.display = 'block'; wrap.appendChild(img); };
+        img.onload = function () {
+          ph.style.display = 'none';
+          wrap.appendChild(img);
+        };
         img.src = s.src;
 
         const title = document.createElement('h3');
@@ -940,40 +1052,34 @@
         track.appendChild(card);
       });
 
-      /* Build dots */
       const totalPages = Math.ceil(screens.length / VISIBLE);
-      for (var i = 0; i < totalPages; i++) {
-        (function (idx) {
-          const dot = document.createElement('button');
-          dot.className = 'carousel-dot' + (idx === 0 ? ' active' : '');
-          dot.setAttribute('aria-label', 'Page ' + (idx + 1));
-          dot.addEventListener('click', function () { goTo(idx * VISIBLE); });
-          dotsWrap.appendChild(dot);
-        })(i);
+
+      for (let i = 0; i < totalPages; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        dot.onclick = () => goTo(i * VISIBLE);
+        dotsWrap.appendChild(dot);
       }
 
       function goTo(idx) {
         current = Math.max(0, Math.min(idx, maxIndex));
-        track.style.transform = 'translateX(-' + (current * STEP) + 'px)';
+        track.style.transform = `translateX(-${current * STEP}px)`;
+
         prevBtn.disabled = current === 0;
         nextBtn.disabled = current >= maxIndex;
-        var page = Math.round(current / VISIBLE);
-        document.querySelectorAll('.carousel-dot').forEach(function (d, i) {
+
+        const page = Math.round(current / VISIBLE);
+
+        document.querySelectorAll('.carousel-dot').forEach((d, i) => {
           d.classList.toggle('active', i === page);
         });
-        counter.textContent = (current + 1) + '–' + Math.min(current + VISIBLE, screens.length) + ' of ' + screens.length;
+
+        counter.textContent =
+          `${current + 1}–${Math.min(current + VISIBLE, screens.length)} of ${screens.length}`;
       }
 
-      prevBtn.addEventListener('click', function () { goTo(current - VISIBLE); });
-      nextBtn.addEventListener('click', function () { goTo(current + VISIBLE); });
-
-      /* Touch swipe */
-      var startX = 0;
-      track.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; });
-      track.addEventListener('touchend', function (e) {
-        var dx = startX - e.changedTouches[0].clientX;
-        if (Math.abs(dx) > 40) dx > 0 ? goTo(current + VISIBLE) : goTo(current - VISIBLE);
-      });
+      prevBtn.onclick = () => goTo(current - VISIBLE);
+      nextBtn.onclick = () => goTo(current + VISIBLE);
 
       goTo(0);
     })();
