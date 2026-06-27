@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dev Quotes · Emna Ben Ali</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background: #0d0010;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Stars background */
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    animation: twinkle var(--d) ease-in-out infinite;
+    opacity: 0;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.8); }
+    50% { opacity: var(--o); transform: scale(1.2); }
+  }
+
+  /* Floating orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+    animation: drift 8s ease-in-out infinite;
+  }
+  .orb1 { width: 300px; height: 300px; background: #ff6eb455; top: -80px; left: -80px; animation-delay: 0s; }
+  .orb2 { width: 200px; height: 200px; background: #c44dff44; bottom: -60px; right: -60px; animation-delay: 3s; }
+  .orb3 { width: 150px; height: 150px; background: #ff9de244; top: 50%; left: 60%; animation-delay: 5s; }
+  @keyframes drift {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(20px, -20px); }
+  }
+
+  /* Card */
+  .carousel {
+    position: relative;
+    z-index: 1;
+    width: min(680px, 92vw);
+    padding: 0 1rem;
+  }
+
+  .label {
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #ff6eb4;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+  }
+
+  .card {
+    background: linear-gradient(135deg, rgba(255,110,180,0.08), rgba(196,77,255,0.06));
+    border: 1px solid rgba(255,110,180,0.2);
+    border-radius: 24px;
+    padding: 3rem 3.5rem;
+    position: relative;
+    backdrop-filter: blur(12px);
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .quote-mark {
+    font-family: 'DM Serif Display', serif;
+    font-size: 80px;
+    line-height: 1;
+    color: #ff6eb4;
+    opacity: 0.3;
+    position: absolute;
+    top: 1rem;
+    left: 2rem;
+    user-select: none;
+  }
+
+  .quote-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(18px, 3vw, 24px);
+    line-height: 1.6;
+    color: #fff;
+    font-style: italic;
+    position: relative;
+    z-index: 1;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .quote-author {
+    margin-top: 1.5rem;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: #ff9de2;
+    font-style: normal;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+    transition: opacity 0.5s ease;
+  }
+  .quote-author::before {
+    content: '— ';
+    opacity: 0.6;
+  }
+
+  .quote-text.fade { opacity: 0; transform: translateY(8px); }
+  .quote-author.fade { opacity: 0; }
+
+  /* Progress dots */
+  .dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 2rem;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,110,180,0.3);
+    transition: all 0.4s ease;
+    cursor: pointer;
+  }
+  .dot.active {
+    background: #ff6eb4;
+    width: 20px;
+    border-radius: 3px;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ff6eb4, #c44dff);
+    border-radius: 0 0 24px 24px;
+    width: 0%;
+    transition: width linear;
+  }
+
+  /* Nav buttons */
+  .nav {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 1.5rem;
+  }
+  .nav-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,110,180,0.3);
+    background: transparent;
+    color: #ff9de2;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  .nav-btn:hover {
+    background: rgba(255,110,180,0.15);
+    border-color: #ff6eb4;
+  }
+
+  .counter {
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255,158,226,0.5);
+    margin-top: 0.75rem;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div class="carousel">
+  <p class="label">✦ Dev Quotes ✦</p>
+  <div class="card">
+    <span class="quote-mark">"</span>
+    <p class="quote-text" id="qtext"></p>
+    <p class="quote-author" id="qauthor"></p>
+    <div class="progress-bar" id="progress"></div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="nav">
+    <button class="nav-btn" onclick="prev()">&#8592;</button>
+    <button class="nav-btn" onclick="next()">&#8594;</button>
+  </div>
+  <p class="counter" id="counter"></p>
+</div>
+
+<script>
+const quotes = [
+  { text: "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.", author: "Martin Fowler" },
+  { text: "First, solve the problem. Then, write the code.", author: "John Johnson" },
+  { text: "Experience is the name everyone gives to their mistakes.", author: "Oscar Wilde" },
+  { text: "In order to be irreplaceable, one must always be different.", author: "Coco Chanel" },
+  { text: "Java is to JavaScript what car is to carpet.", author: "Chris Heilmann" },
+  { text: "Knowledge is power.", author: "Francis Bacon" },
+  { text: "Sometimes it pays to stay in bed on Monday rather than spending the rest of the week debugging.", author: "Dan Salomon" },
+  { text: "Simplicity is the soul of efficiency.", author: "Austin Freeman" },
+  { text: "Before software can be reusable it first has to be usable.", author: "Ralph Johnson" },
+  { text: "Make it work, make it right, make it fast.", author: "Kent Beck" },
+  { text: "The best error message is the one that never shows up.", author: "Thomas Fuchs" },
+  { text: "Code is like humor. When you have to explain it, it's bad.", author: "Cory House" },
+  { text: "Fix the cause, not the symptom.", author: "Steve Maguire" },
+  { text: "Optimism is an occupational hazard of programming; feedback is the treatment.", author: "Kent Beck" },
+  { text: "When to use iterative development? You should use iterative development only on projects that you want to succeed.", author: "Martin Fowler" },
+  { text: "Measuring programming progress by lines of code is like measuring aircraft building progress by weight.", author: "Bill Gates" },
+  { text: "Programmer: A machine that turns coffee into code.", author: "Anonymous" },
+  { text: "The most disastrous thing that you can ever learn is your first programming language.", author: "Alan Kay" },
+  { text: "The function of good software is to make the complex appear simple.", author: "Grady Booch" },
+  { text: "Talk is cheap. Show me the code.", author: "Linus Torvalds" },
+];
+
+const INTERVAL = 5000;
+let current = 0;
+let timer, progTimer;
+
+// Stars
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 80; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 2.5 + 0.5;
+  s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${(Math.random()*3+2).toFixed(1)}s;--o:${(Math.random()*0.6+0.2).toFixed(2)};animation-delay:${(Math.random()*4).toFixed(1)}s`;
+  starsEl.appendChild(s);
+}
+
+// Dots
+const dotsEl = document.getElementById('dots');
+quotes.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+});
+
+function updateDots() {
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('active', i === current);
+  });
+}
+
+function showQuote(idx, dir = 1) {
+  const qt = document.getElementById('qtext');
+  const qa = document.getElementById('qauthor');
+  qt.classList.add('fade');
+  qa.classList.add('fade');
+  setTimeout(() => {
+    qt.textContent = quotes[idx].text;
+    qa.textContent = quotes[idx].author;
+    qt.classList.remove('fade');
+    qa.classList.remove('fade');
+    document.getElementById('counter').textContent = `${idx + 1} / ${quotes.length}`;
+    updateDots();
+    startProgress();
+  }, 500);
+}
+
+function startProgress() {
+  const bar = document.getElementById('progress');
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+  clearTimeout(progTimer);
+  setTimeout(() => {
+    bar.style.transition = `width ${INTERVAL}ms linear`;
+    bar.style.width = '100%';
+  }, 30);
+}
+
+function goTo(idx) {
+  clearInterval(timer);
+  current = (idx + quotes.length) % quotes.length;
+  showQuote(current);
+  timer = setInterval(next, INTERVAL);
+}
+
+function next() { goTo(current + 1); }
+function prev() { goTo(current - 1); }
+
+showQuote(0);
+timer = setInterval(next, INTERVAL);
+</script>
+</body>
+</html>
