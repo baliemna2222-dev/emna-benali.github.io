@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ESP32 Mecanum Robot — Emna Ben Ali</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+  :root{
+    --bg:#170a1c;
+    --bg2:#1f0e27;
+    --card:#241130;
+    --line:#3a1f45;
+    --line-soft:rgba(255,255,255,0.06);
+    --ink:#f6eef9;
+    --ink2:#c9b4d1;
+    --ink3:#8d7796;
+    --pink:#ff4fa3;
+    --pink-dim:rgba(255,79,163,0.12);
+    --plum:#8a2a68;
+    --cyan:#4fd8e0;
+    --mono:'JetBrains Mono',monospace;
+    --disp:'Space Grotesk',sans-serif;
+    --body:'Inter',sans-serif;
+  }
+
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(255,79,163,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(138,42,104,0.18), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.65;
+    min-height:100vh;
+  }
+
+  a{color:inherit;}
+
+  ::selection{background:var(--pink);color:#170a1c;}
+
+  /* ---- top bar ---- */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 2.5rem;height:64px;
+    background:rgba(23,10,28,0.75);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .back-link{
+    display:inline-flex;align-items:center;gap:0.5rem;
+    font-family:var(--mono);font-size:0.78rem;letter-spacing:0.03em;
+    color:var(--ink2);text-decoration:none;
+  }
+  .back-link:hover{color:var(--pink);}
+  .topbar-status{
+    display:flex;align-items:center;gap:0.5rem;
+    font-family:var(--mono);font-size:0.72rem;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--ink3);
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--pink);
+    box-shadow:0 0 8px var(--pink);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
+
+  /* ---- hero ---- */
+  .hero{
+    padding:9.5rem 2.5rem 4rem;
+    max-width:1180px;margin:0 auto;
+    display:grid;grid-template-columns:1.15fr 0.85fr;gap:3rem;
+    align-items:center;
+  }
+  .eyebrow{
+    font-family:var(--mono);font-size:0.75rem;letter-spacing:0.16em;
+    text-transform:uppercase;color:var(--pink);
+    display:flex;align-items:center;gap:0.6rem;margin-bottom:1.5rem;
+  }
+  .eyebrow::before{content:'';width:24px;height:1px;background:var(--pink);}
+  h1.title{
+    font-family:var(--disp);font-weight:700;
+    font-size:clamp(2.4rem,4.6vw,3.6rem);
+    line-height:1.05;letter-spacing:-0.02em;
+    margin-bottom:1.25rem;
+  }
+  h1.title span{color:var(--pink);}
+  .lede{
+    color:var(--ink2);font-size:1.05rem;max-width:520px;margin-bottom:2rem;
+  }
+  .hero-ctas{display:flex;gap:0.85rem;flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;align-items:center;gap:0.5rem;
+    padding:0.75rem 1.5rem;border-radius:6px;
+    font-family:var(--mono);font-size:0.8rem;font-weight:500;
+    text-decoration:none;letter-spacing:0.02em;
+    border:1px solid transparent;transition:all .2s;
+  }
+  .btn-solid{background:var(--pink);color:#170a1c;}
+  .btn-solid:hover{background:#ff6fb3;}
+  .btn-ghost{border-color:var(--line);color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--pink);color:var(--pink);}
+
+  .hero-stats{
+    display:grid;grid-template-columns:1fr 1fr;gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:10px;
+    overflow:hidden;
+  }
+  .hero-stat{background:var(--card);padding:1.15rem 1.25rem;}
+  .hero-stat b{
+    display:block;font-family:var(--disp);font-size:1.5rem;color:var(--pink);
+  }
+  .hero-stat span{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--ink3);}
+
+  /* ---- sections ---- */
+  section{max-width:1180px;margin:0 auto;padding:4.5rem 2.5rem;}
+  .sec-label{
+    font-family:var(--mono);font-size:0.72rem;letter-spacing:0.16em;
+    text-transform:uppercase;color:var(--pink);
+    display:flex;align-items:center;gap:0.6rem;margin-bottom:0.9rem;
+  }
+  .sec-label::before{content:'';width:24px;height:1px;background:var(--pink);}
+  h2.sec-title{
+    font-family:var(--disp);font-weight:600;
+    font-size:clamp(1.6rem,2.6vw,2.2rem);margin-bottom:2rem;letter-spacing:-0.01em;
+  }
+  .divider{height:1px;background:var(--line-soft);max-width:1180px;margin:0 auto;}
+
+  /* video frame */
+  .video-frame{
+    border-radius:12px;overflow:hidden;border:1px solid var(--line);
+    background:#000;box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  }
+  .video-frame video{display:block;width:100%;}
+  .caption{
+    font-family:var(--mono);font-size:0.78rem;color:var(--ink3);
+    text-align:center;margin-top:0.9rem;
+  }
+
+  /* objectives */
+  .obj-list{list-style:none;display:grid;gap:0.9rem;}
+  .obj-list li{
+    display:flex;gap:0.9rem;align-items:flex-start;
+    padding:1rem 1.2rem;background:var(--card);border:1px solid var(--line-soft);
+    border-radius:8px;color:var(--ink2);font-size:0.94rem;
+  }
+  .obj-list li::before{
+    content:'▹';color:var(--pink);font-size:1rem;flex-shrink:0;line-height:1.4;
+  }
+
+  /* features grid */
+  .feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .feat{background:var(--card);padding:1.5rem;}
+  .feat .ic{font-size:1.4rem;margin-bottom:0.6rem;display:block;}
+  .feat h4{font-family:var(--disp);font-size:1rem;margin-bottom:0.4rem;}
+  .feat p{color:var(--ink3);font-size:0.85rem;}
+
+  /* how it works */
+  .flow{
+    display:flex;flex-wrap:wrap;gap:0;align-items:stretch;
+    border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  }
+  .flow-step{
+    flex:1 1 200px;background:var(--card);padding:1.5rem;position:relative;
+    border-right:1px solid var(--line-soft);
+  }
+  .flow-step:last-child{border-right:none;}
+  .flow-step .num{font-family:var(--mono);color:var(--pink);font-size:0.75rem;margin-bottom:0.5rem;display:block;}
+  .flow-step h4{font-family:var(--disp);font-size:0.98rem;margin-bottom:0.4rem;}
+  .flow-step p{font-size:0.83rem;color:var(--ink3);}
+
+  /* tables */
+  table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+  .table-wrap{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:1.5rem;}
+  th{
+    background:var(--bg2);text-align:left;padding:0.85rem 1.1rem;
+    font-family:var(--mono);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--pink);border-bottom:1px solid var(--line);
+  }
+  td{padding:0.8rem 1.1rem;border-bottom:1px solid var(--line-soft);color:var(--ink2);}
+  tr:last-child td{border-bottom:none;}
+  td.center, th.center{text-align:center;}
+
+  /* mecanum diagram */
+  .wheel-diagram{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;max-width:420px;margin:0 auto 2rem;
+  }
+  .wheel-box{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:1.4rem;text-align:center;
+  }
+  .wheel-box .roller{
+    font-family:var(--disp);font-size:1.8rem;color:var(--pink);display:block;margin-bottom:0.4rem;
+  }
+  .wheel-box span.lbl{font-family:var(--mono);font-size:0.7rem;color:var(--ink3);text-transform:uppercase;letter-spacing:0.06em;}
+
+  /* control interface */
+  .control-panel{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;
+  }
+  .dpad{
+    display:grid;grid-template-columns:repeat(3,56px);grid-template-rows:repeat(3,56px);
+    gap:6px;justify-content:center;margin:0 auto;
+  }
+  .dpad button{
+    background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--ink2);
+    font-size:1.1rem;cursor:pointer;transition:all .15s;
+  }
+  .dpad button:hover, .dpad button.active{background:var(--pink);color:#170a1c;border-color:var(--pink);
+    box-shadow:0 0 18px rgba(255,79,163,0.5);}
+  .dpad .stop{background:var(--plum);color:var(--ink);font-family:var(--mono);font-size:0.65rem;}
+  .steps-list{list-style:none;counter-reset:step;display:grid;gap:0.75rem;}
+  .steps-list li{
+    counter-increment:step;padding-left:2.2rem;position:relative;color:var(--ink2);font-size:0.9rem;
+  }
+  .steps-list li::before{
+    content:counter(step);position:absolute;left:0;top:0;
+    width:1.6rem;height:1.6rem;border-radius:50%;background:var(--pink-dim);
+    color:var(--pink);font-family:var(--mono);font-size:0.75rem;
+    display:flex;align-items:center;justify-content:center;border:1px solid var(--pink);
+  }
+  .slider-mock{margin-top:1.2rem;}
+  .slider-track{height:6px;background:var(--bg2);border-radius:4px;position:relative;border:1px solid var(--line);}
+  .slider-fill{position:absolute;left:0;top:0;bottom:0;width:62%;background:var(--pink);border-radius:4px;}
+  .slider-mock span{font-family:var(--mono);font-size:0.68rem;color:var(--ink3);display:block;margin-top:0.4rem;}
+
+  /* dev log */
+  details{
+    background:var(--card);border:1px solid var(--line-soft);border-radius:10px;
+    margin-bottom:0.75rem;overflow:hidden;
+  }
+  summary{
+    padding:1.1rem 1.4rem;cursor:pointer;font-family:var(--disp);font-size:0.95rem;
+    list-style:none;display:flex;align-items:center;justify-content:space-between;
+    color:var(--ink);
+  }
+  summary::-webkit-details-marker{display:none;}
+  summary::after{content:'+';font-family:var(--mono);color:var(--pink);font-size:1.1rem;}
+  details[open] summary::after{content:'–';}
+  details[open] summary{border-bottom:1px solid var(--line-soft);}
+  .details-body{padding:1.3rem 1.4rem;}
+  .details-body p{color:var(--ink3);font-size:0.85rem;margin-top:0.8rem;}
+  .video-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;}
+
+  /* credits / footer */
+  .credit-card{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:2rem;text-align:center;
+  }
+  .credit-card p{color:var(--ink2);max-width:640px;margin:0 auto 1rem;}
+  .credit-names{
+    font-family:var(--disp);font-size:1.1rem;color:var(--pink);margin-bottom:1rem;
+  }
+  footer{
+    padding:2rem 2.5rem;text-align:center;border-top:1px solid var(--line-soft);
+    font-family:var(--mono);font-size:0.75rem;color:var(--ink3);
+  }
+  footer a{color:var(--pink);text-decoration:none;}
+
+  @media(max-width:860px){
+    .hero{grid-template-columns:1fr;padding-top:8rem;}
+    .control-panel{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="back-link">← Back to Portfolio</a>
+  <div class="topbar-status"><span class="dot"></span> Active Development</div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="eyebrow">Embedded Systems · Robotics</div>
+    <h1 class="title">ESP32 <span>Mecanum</span><br>Robot</h1>
+    <p class="lede">
+      An omnidirectional, WiFi-controlled robot riding on four mecanum wheels —
+      moving forward, backward, sideways, diagonally, and rotating in place,
+      all without a single steering part.
+    </p>
+    <div class="hero-ctas">
+      <a href="https://github.com/baliemna2222-dev/ESP32-Mecanum-Robot" target="_blank" rel="noopener" class="btn btn-solid">View on GitHub →</a>
+      <a href="#devlog" class="btn btn-ghost">Development Log</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><b>4</b><span>Mecanum Wheels</span></div>
+    <div class="hero-stat"><b>2</b><span>H-Bridge Drivers</span></div>
+    <div class="hero-stat"><b>360°</b><span>Omnidirectional</span></div>
+    <div class="hero-stat"><b>WiFi</b><span>Live Control</span></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DEMO -->
+<section id="demo">
+  <div class="sec-label">Demo</div>
+  <h2 class="sec-title">See it move</h2>
+  <div class="video-frame">
+    <video src="https://github.com/user-attachments/assets/735bc008-01eb-4c23-955c-d4ed90044f93" controls muted width="100%"></video>
+  </div>
+  <p class="caption">Live demo — forward, strafe, diagonal, and rotation control.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-label">About</div>
+  <h2 class="sec-title">What this project is</h2>
+  <p style="color:var(--ink2);max-width:760px;margin-bottom:1.5rem;">
+    Built collaboratively with <strong style="color:var(--ink);">Mohamed Ben Ali</strong>, this car
+    demonstrates how mecanum wheels enable smooth 360° omnidirectional movement —
+    sliding sideways, cutting diagonals, or spinning on the spot without ever
+    changing which way the chassis is facing. It's controlled wirelessly over WiFi
+    through a browser-based interface, combining embedded systems, robotics, and
+    wireless communication into one hands-on platform for learning and experimentation.
+  </p>
+
+  <h2 class="sec-title" style="margin-top:2.5rem;font-size:1.3rem;">Objectives</h2>
+  <ul class="obj-list">
+    <li>Design a 4-wheel mecanum chassis for full omnidirectional motion</li>
+    <li>Implement independent PWM control for each motor using the ESP32</li>
+    <li>Develop an ESP32 web server for real-time wireless control</li>
+    <li>Create a responsive, browser-based control interface</li>
+  </ul>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="sec-label">Capabilities</div>
+  <h2 class="sec-title">Key features</h2>
+  <div class="feat-grid">
+    <div class="feat"><span class="ic">🕹️</span><h4>Omnidirectional Movement</h4><p>Move in any direction without rotating the chassis</p></div>
+    <div class="feat"><span class="ic">🔄</span><h4>In-place Rotation</h4><p>Spin a full 360° on the spot</p></div>
+    <div class="feat"><span class="ic">📡</span><h4>WiFi Control</h4><p>Drive it from any device on the same network</p></div>
+    <div class="feat"><span class="ic">⚡</span><h4>Real-Time Response</h4><p>Low-latency command execution</p></div>
+    <div class="feat"><span class="ic">🎨</span><h4>Web Interface</h4><p>Simple, intuitive directional control panel</p></div>
+    <div class="feat"><span class="ic">🔧</span><h4>Modular Code</h4><p>Motor, WiFi, and control logic kept separate</p></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="sec-label">System</div>
+  <h2 class="sec-title">How it works</h2>
+  <div class="flow">
+    <div class="flow-step"><span class="num">01</span><h4>Command received</h4><p>The ESP32 listens for movement commands sent over WiFi from the web interface.</p></div>
+    <div class="flow-step"><span class="num">02</span><h4>Translated to PWM</h4><p>Each command is converted into PWM motor signals for direction and speed.</p></div>
+    <div class="flow-step"><span class="num">03</span><h4>Wheels respond</h4><p>All four mecanum wheels adjust independently to produce the requested motion.</p></div>
+    <div class="flow-step"><span class="num">04</span><h4>Continuous loop</h4><p>The ESP32 keeps listening and updating outputs in real time for smooth control.</p></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ELECTRONICS & WIRING -->
+<section id="build">
+  <div class="sec-label">Build Process</div>
+  <h2 class="sec-title">Electronics & wiring</h2>
+  <p style="color:var(--ink2);max-width:760px;margin-bottom:2rem;">
+    Two H-bridge drivers split the work: one controls both left-side motors,
+    the other both right-side motors. Each motor gets two digital pins for
+    direction and a PWM signal for speed — a setup that keeps current handling
+    stable and wiring simple for a four-motor mecanum drivetrain.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>IN1</th><th>IN2</th><th>Motor Direction</th></tr>
+      <tr><td>1</td><td>0</td><td>Forward</td></tr>
+      <tr><td>0</td><td>1</td><td>Backward</td></tr>
+      <tr><td>0</td><td>0</td><td>Stop</td></tr>
+      <tr><td>1</td><td>1</td><td>Brake</td></tr>
+    </table>
+  </div>
+
+  <h2 class="sec-title" style="font-size:1.15rem;margin-bottom:1.2rem;">ESP32 → motor driver mapping</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Wheel</th><th>ESP32 Pins</th><th>Motor Driver</th></tr>
+      <tr><td>Back Left (BL)</td><td class="center">GPIO 12, GPIO 13</td><td>H-Bridge 1 (IN1 / IN2)</td></tr>
+      <tr><td>Front Left (FL)</td><td class="center">GPIO 14, GPIO 27</td><td>H-Bridge 1 (IN3 / IN4)</td></tr>
+      <tr><td>Front Right (FR)</td><td class="center">GPIO 2, GPIO 0</td><td>H-Bridge 2 (IN1 / IN2)</td></tr>
+      <tr><td>Back Right (BR)</td><td class="center">GPIO 16, GPIO 4</td><td>H-Bridge 2 (IN3 / IN4)</td></tr>
+    </table>
+  </div>
+
+  <h2 class="sec-title" style="font-size:1.15rem;margin-bottom:1.2rem;">Electronics used</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Component</th><th>Role</th></tr>
+      <tr><td>ESP32 Dev Board</td><td>Main controller — WiFi server + motor logic</td></tr>
+      <tr><td>2× H-Bridge Motor Drivers</td><td>Independent direction + PWM speed control per side</td></tr>
+      <tr><td>4× DC Motors</td><td>One per mecanum wheel</td></tr>
+      <tr><td>Battery Pack</td><td>Powers motors and ESP32, separate rails recommended</td></tr>
+      <tr><td>Jumper Wires / Connectors</td><td>GPIO-to-driver and driver-to-motor wiring</td></tr>
+    </table>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MECANUM MECHANICS -->
+<section id="mecanics">
+  <div class="sec-label">Mechanics</div>
+  <h2 class="sec-title">How mecanum wheels work</h2>
+  <p style="color:var(--ink2);max-width:760px;margin-bottom:2rem;">
+    Each wheel has small rollers around its rim, angled at 45° and spinning
+    freely on their own. When the wheel turns, those angled rollers split the
+    force in two directions at once — partly forward, partly sideways. Mount
+    four wheels with their rollers angled opposite to their diagonal partner,
+    and spinning each one at a different speed and direction lets the whole
+    chassis move any way at all — forward, sideways, diagonal, or spinning in
+    place — with zero steering mechanism.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Motion</th><th class="center">FL</th><th class="center">FR</th><th class="center">BL</th><th class="center">BR</th></tr>
+      <tr><td>Forward</td><td class="center">+</td><td class="center">+</td><td class="center">+</td><td class="center">+</td></tr>
+      <tr><td>Backward</td><td class="center">−</td><td class="center">−</td><td class="center">−</td><td class="center">−</td></tr>
+      <tr><td>Strafe Right</td><td class="center">+</td><td class="center">−</td><td class="center">−</td><td class="center">+</td></tr>
+      <tr><td>Strafe Left</td><td class="center">−</td><td class="center">+</td><td class="center">+</td><td class="center">−</td></tr>
+      <tr><td>Diagonal ↗</td><td class="center">+</td><td class="center">0</td><td class="center">0</td><td class="center">+</td></tr>
+      <tr><td>Diagonal ↖</td><td class="center">0</td><td class="center">+</td><td class="center">+</td><td class="center">0</td></tr>
+      <tr><td>Rotate CW</td><td class="center">+</td><td class="center">−</td><td class="center">+</td><td class="center">−</td></tr>
+      <tr><td>Rotate CCW</td><td class="center">−</td><td class="center">+</td><td class="center">−</td><td class="center">+</td></tr>
+    </table>
+  </div>
+  <p class="caption" style="text-align:left;margin-bottom:2rem;">+ spins forward · − spins backward · 0 stays still</p>
+
+  <div class="wheel-diagram">
+    <div class="wheel-box"><span class="roller">╲╲╲</span><span class="lbl">FL Roller Angle</span></div>
+    <div class="wheel-box"><span class="roller">╱╱╱</span><span class="lbl">FR Roller Angle</span></div>
+    <div class="wheel-box"><span class="roller">╱╱╱</span><span class="lbl">BL Roller Angle</span></div>
+    <div class="wheel-box"><span class="roller">╲╲╲</span><span class="lbl">BR Roller Angle</span></div>
+  </div>
+  <p class="caption">📺 Further reading: <a href="https://www.youtube.com/watch?v=0k-Ey9bS9lE" target="_blank" rel="noopener" style="color:var(--pink);">The Simple Mechanics of Mecanum Wheels</a></p>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTROL INTERFACE -->
+<section id="control">
+  <div class="sec-label">Interface</div>
+  <h2 class="sec-title">Driving the robot</h2>
+  <p style="color:var(--ink2);max-width:760px;margin-bottom:2rem;">
+    No app to install — the ESP32 hosts its own control page. It runs its own
+    WiFi access point (<code style="color:var(--pink)">MecanumCar</code>), and any
+    phone or laptop that joins it can open the controller straight from a browser.
+  </p>
+
+  <div class="control-panel">
+    <div>
+      <div class="dpad">
+        <button>↖</button><button>↑</button><button class="active">↗</button>
+        <button>←</button><button class="stop">STOP</button><button>→</button>
+        <button>↙</button><button>↓</button><button>↘</button>
+      </div>
+      <div class="slider-mock">
+        <div class="slider-track"><div class="slider-fill"></div></div>
+        <span>Speed — live PWM via /speed endpoint</span>
+      </div>
+    </div>
+    <ol class="steps-list">
+      <li>Power on the robot — the ESP32 boots and creates the <code style="color:var(--pink)">MecanumCar</code> WiFi network</li>
+      <li>Connect to it from your phone or laptop (password: <code style="color:var(--pink)">12345678</code>)</li>
+      <li>Open a browser and go to <code style="color:var(--pink)">http://192.168.4.1</code></li>
+      <li>Press and hold any direction button to drive — release to stop</li>
+    </ol>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DEV LOG -->
+<section id="devlog">
+  <div class="sec-label">Behind the Scenes</div>
+  <h2 class="sec-title">Development & testing log</h2>
+
+  <details open>
+    <summary>1 · Flashing the Firmware</summary>
+    <div class="details-body">
+      <div class="video-frame"><video src="https://github.com/user-attachments/assets/34694f4f-8a5f-49ef-81c3-ddbb7b9b13a8" controls muted width="100%"></video></div>
+      <p>Uploading the firmware to the ESP32 for the first time.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>2 · First WiFi Control Check</summary>
+    <div class="details-body">
+      <div class="video-frame"><video src="https://github.com/user-attachments/assets/da382cb0-d3ab-4932-ae91-96e2213c5eb5" controls muted width="100%"></video></div>
+      <p>First successful connection to the ESP32's WiFi access point and initial control test.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>3 · Checking Car Behavior</summary>
+    <div class="details-body">
+      <div class="video-frame"><video src="https://github.com/user-attachments/assets/5c06c243-434d-41fa-937e-ceec675c9753" controls muted width="100%"></video></div>
+      <p>Early test of the car's response to basic movement commands.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>4 · Fix Iterations</summary>
+    <div class="details-body">
+      <div class="video-row">
+        <div class="video-frame"><video src="https://github.com/user-attachments/assets/046dd435-1c78-4119-966a-74a73fc16e7c" controls muted width="100%"></video></div>
+        <div class="video-frame"><video src="https://github.com/user-attachments/assets/93b3b3e7-c80a-48ec-b5f1-a296e39c4cc1" controls muted width="100%"></video></div>
+        <div class="video-frame"><video src="https://github.com/user-attachments/assets/cb181bed-d23d-442a-9974-46c312364e2c" controls muted width="100%"></video></div>
+        <div class="video-frame"><video src="https://github.com/user-attachments/assets/e9421a7c-0751-4333-a62c-e34f26e291a9" controls muted width="100%"></video></div>
+      </div>
+      <p>Debugging and fixing motor/wiring issues across several iterations.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>5 · Checking All Movements</summary>
+    <div class="details-body">
+      <div class="video-row">
+        <div class="video-frame"><video src="https://github.com/user-attachments/assets/555ff487-c7b3-4d34-b684-d7a0502952e2" controls muted width="100%"></video></div>
+        <div class="video-frame"><video src="https://github.com/user-attachments/assets/0da0d8e7-fb9d-4aa4-92c3-6378bef935df" controls muted width="100%"></video></div>
+      </div>
+      <p>Verifying every direction — forward, strafe, diagonal, and rotation — once the fixes were in place.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>6 · Final Demo</summary>
+    <div class="details-body">
+      <div class="video-frame"><video src="https://github.com/user-attachments/assets/735bc008-01eb-4c23-955c-d4ed90044f93" controls muted width="100%"></video></div>
+      <p>The final, working demo shown at the top of this page.</p>
+    </div>
+  </details>
+</section>
+
+<div class="divider"></div>
+
+<!-- CREDITS -->
+<section id="credits">
+  <div class="sec-label">In a Nutshell</div>
+  <h2 class="sec-title">Credits</h2>
+  <div class="credit-card">
+    <div class="credit-names">Emna Ben Ali & Mohamed Ben Ali</div>
+    <p>
+      From hardware assembly to ESP32 firmware and WiFi control, every part of this
+      robot was designed and tested through continuous iteration and teamwork —
+      more a learning experience in robotics, wireless communication, and real-world
+      system integration than just a car that happens to drive sideways.
+    </p>
+    <p style="color:var(--ink3);font-size:0.85rem;">Special thanks to <a href="https://www.makerskills.tn/" target="_blank" rel="noopener" style="color:var(--pink);">Maker Skills</a> for their support and resources.</p>
+  </div>
+</section>
+
+<footer>
+  <a href="https://github.com/baliemna2222-dev/ESP32-Mecanum-Robot" target="_blank" rel="noopener">github.com/baliemna2222-dev/ESP32-Mecanum-Robot</a>
+  &nbsp;·&nbsp; <a href="index.html">Back to Portfolio</a>
+</footer>
+
+</body>
+</html>
